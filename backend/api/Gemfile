@@ -25,6 +25,11 @@ gem 'bootsnap', '>= 1.4.4', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
+# Rails 6.1.6を使用し、Ruby 3.1系を使用すると出るエラーの為、下記3つのgemをinstall
+gem 'net-smtp'
+gem 'net-imap'
+gem 'net-pop'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -38,3 +43,11 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+
+# 1
+# ~>:マイナーバージョンの部分に相当するアップデート済みの gem をインストール。
+# ref:'~>1.2.3':（1.2.3以上1.3.0未満）。
+# '>= X.X.X': X.X.X以上
+# ref:'~> 6.1.6', '>= 6.1.6.1': マイナーバージョン6.1で、かつ6.1.6.1以上（6.2にはならない）。
+
