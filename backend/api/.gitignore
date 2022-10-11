@@ -1,0 +1,105 @@
+
+# Ignore bundler config.
+# /<file or directory>:.gitignoreファイルと同じ階層の相対パスで指定されたディレクトリやファイルを除外
+/.bundle
+# vendor/bundleを.gitignoreに設定していないと、すべてのgemがgit管理される。
+/vendor/bundle
+
+# Ignore all logfiles and tempfiles.
+# 1
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore pidfiles, but keep the directory.
+# pidfilesは無視し、ディレクトリは残す。
+/tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
+
+# Ignore uploaded files in development.
+# 開発環境でアップロードしたファイルを無視する
+/storage/*
+!/storage/.keep
+.byebug_history
+
+# Ignore master key for decrypting credentials and more.
+# クレデンシャルを復号化するためのマスターキーなどを無視する。
+/config/master.key
+
+# dotenv, dotenv-rails
+# TODO Comment out these rules if environment variables can be committed
+# TODO 環境変数がコミット可能な場合、これらのルールをコメントアウトする。
+.env
+# 特定の拡張子を*を使って、* + 拡張子と指定する事で場所に関係なく指定した拡張子を全てGit管理下から除外する事が出来ます。
+.env*.local
+
+# -   -   -   -   -   -   -
+*.rbc
+capybara-*.html
+.rspec
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/*.sqlite3-[0-9]*
+/public/system
+/coverage/
+/spec/tmp
+*.orig
+rerun.txt
+pickle-email-*.html
+
+
+
+# TODO Comment out this rule if you are OK with secrets being uploaded to the repo
+config/initializers/secret_token.rb
+
+
+# Only include if you have production secrets in this file, which is no longer a Rails default
+# config/secrets.yml
+
+# these should all be checked in to normalize the environment:
+# Gemfile.lock, .ruby-version, .ruby-gemset
+
+# unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
+.rvmrc
+
+# if using bower-rails ignore default bower_components path bower.json files
+/vendor/assets/bower_components
+*.bowerrc
+bower.json
+
+# Ignore pow environment settings
+# powの環境設定を無視する
+.powenv
+
+
+
+# Ignore node_modules
+node_modules/
+
+# Ignore precompiled javascript packs
+/public/packs
+/public/packs-test
+/public/assets
+
+# Ignore yarn files
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+# Ignore uploaded files in development
+/storage/*
+!/storage/.keep
+/public/uploads
+
+# =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   = 
+
+# 1
+# *:ディレクトリ内の全てのファイルやディレクトリを除外
+# !:特定のファイルやディレクトリだけGit管理したい場合に、
+# 指定するファイル or ディレクトリの最初に!を付ける事で除外出来ます。
+# 「 ! 」を使う際の注意点
+# 1.最初の指定した設定は、後から追加した設定に上書きされるので指定する順番に気をつけましょう。
+# 2.ディレクトリを除外した後に、ディレクトリ内の一部のファイルに対して「!」を使ってGit管理する事は出来ません。
+# 3.ただし、ディレクトリ除外ではなくディレクトリの中身を除外する*を使う事で一部のファイルをGit管理する事が出来ます。
