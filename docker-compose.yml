@@ -48,18 +48,20 @@ services:
     # -itのt=tty
     tty: true
 
-  # front: 
-  #   build:
-  #     context: ./front/
-  #     dockerfile: Dockerfile
-  #   image: nextjs-img
-  #   container_name: nextjs-ctr
-  #   volumes:
-  #     - ./front/front-app:/usr/src/front-app
-  #   # 作業ディレクトリ/front-appをに指定しているので、'npm run dev'のみでOK
-  #   command: 'npm run dev'
-  #   ports:
-  #     - "3001:3000"
+  front: 
+    build:
+      context: ./frontend/front-app
+      dockerfile: Dockerfile
+    image: nextjs-img
+    container_name: nextjs-ctr
+    volumes:
+      - ./frontend/front-app:/usr/src/front-app
+    # 作業ディレクトリ/front-appをに指定しているので、'npm run dev'のみでOK
+    command: 'npm run dev'
+    ports:
+      - "4000:3000"
+    depends_on:
+      - api
 
 # 記憶領域のマウントを設定(ボリュームマウント)。
 # ここで定義したvolumeはdocker-compose実行時に自動で作成されます。      
