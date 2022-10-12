@@ -6,23 +6,28 @@ ruby '3.1.2'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.6', '>= 6.1.6.1'
 # Use mysql as the database for Active Record
+# [Active Recordのデータベースとしてmysqlを使用する。]
 gem 'mysql2', '~> 0.5'
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
+# [Redis アダプタを使用して Action Cable を実運用で実行する]
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
+# [アクティブモデルを使用する]
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
 # Reduces boot times through caching; required in config/boot.rb
+# [キャッシュによる起動時間の短縮]
 gem 'bootsnap', '>= 1.4.4', require: false
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
+# [Cross-Origin Resource Sharing（CORS）の処理にRack CORSを使用し、クロスオリジンAJAXを可能にする]
 # gem 'rack-cors'
 
 # Rails 6.1.6を使用し、Ruby 3.1系を使用すると出るエラーの為、下記3つのgemをinstall
@@ -32,13 +37,19 @@ gem 'net-pop'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  # [コード中の任意の場所で 'byebug' を呼び出すと、実行が停止し、デバッガコンソールが表示されます。]
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end
 
 group :development do
   gem 'listen', '~> 3.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  # [Springは、アプリケーションをバックグラウンドで動作させ続けることで、開発をスピードアップさせます。]
   gem 'spring'
+  # 静的コード解析ツールをインストール。
+  gem 'rubocop', require: false
+  gem "rubocop-rails", require: false
+  gem "rubocop-rspec", require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

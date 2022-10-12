@@ -1,0 +1,96 @@
+# 1
+
+# 2
+# inherit_from: .rubocop_todo.yml
+
+# Copの自体の設定を編集する場合は以下のように記述します。
+# [Cop名]:
+#   [オプション名]: [値]
+
+# 3
+# 追加した規約ファイル読込
+require:
+  # Railsに関わる構文規則チェック
+  - rubocop-rails
+  # Rspecに関わる構文規則チェック
+  - rubocop-rspec
+
+# AllCopsオプション:全てのCopsを対象にした設定。
+AllCops:
+  # NewCops: enableを追加することで、RuboCopのバージョンがあがった際に追加されたCopを自動で有効にする。
+  # NewCops: enableの設定は任意ですが、新たなCopに追従していくために特に理由がなければ有効にするとよい。
+  NewCops: enable
+  # Rubyバージョン指定
+  TargetRubyVersion: 3.1.2
+  # rubocopによって解析をしないディレクトリやファイルを指定。現実的じゃないコーディング規約を除外。
+  Exclude:
+    - "config.ru"
+    - "bin/**"
+    - "lib/**"
+    - "db/**/*"
+    - "config/**/*"
+    - "script/**/*"
+    - !ruby/regexp /old_and_unused\.rb$/
+    - "vendor/**/*" # rubocop config/default.yml
+    - "node_modules/**/*"
+    - "Gemfile"
+
+# 恒久対応としてCopを無効にする設定は以下の通りです。
+# [Cop名]:
+#   Enabled: false
+
+# 日本語でのコメントを許可
+AsciiComments:
+  Enabled: false
+
+# クラスのコメント必須を無視
+Documentation:
+  Enabled: false
+
+# モジュール名::クラス名の定義を許可
+ClassAndModuleChildren:
+  Enabled: false
+
+# 文字リテラルのイミュータブル宣言を無視（freezeになるのはRuby3以降）
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# !! のイディオムを許可
+Style/DoubleNegation:
+  Enabled: false
+
+# 普通の文字列はシングルクォーテーションを使用しるという規約。
+Style/StringLiterals:
+  Enabled: false
+
+# 1行あたりの文字数をチェックする
+Layout/LineLength:
+  Max: 130
+  # 下記ファイルはチェックの対象から外す
+  Exclude:
+    - "Rakefile"
+    - "spec/rails_helper.rb"
+    - "spec/spec_helper.rb"
+# =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =
+# 1
+# [.rubocop.yml]:独自のコーディング規約を設定するファイル。
+# RuboCop自身に関する設定だけでなく、Copの有効無効の制御や、Copのカスタマイズをする際にも利用します。
+
+# -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+# 2
+# inherit_from:継承。設定を読み込む際に利用するオプション。
+# .rubocop.ymlにinherit_from: .rubocop_todo.ymlが追加すると、
+# .rubocop_todo.ymlの内容が.rubocop.ymlに反映。
+
+# -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+# 3
+# rubocop：生Rubyに関わる構文規則チェック
+# rubocop-rails：Railsに関わる構文規則チェック
+# rubocop-performance：パフォーマンスに関わる構文規則チェック
+# バージョン0.71以前では、全部入りだったため、RuboCop関連の記事を読むときは、
+# バージョン0.71以前なのか、0.72以降のものなのかを注意
+
+# -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+# -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+# -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+# -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -

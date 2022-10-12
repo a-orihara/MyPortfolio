@@ -35,7 +35,11 @@
 # 特定の拡張子を*を使って、* + 拡張子と指定する事で場所に関係なく指定した拡張子を全てGit管理下から除外する事が出来ます。
 .env*.local
 
+# RuboCop
+.rubocop
+
 # -   -   -   -   -   -   -
+
 *.rbc
 capybara-*.html
 .rspec
