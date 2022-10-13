@@ -1,0 +1,4 @@
+Next.js では、バージョン 11 から、ESLint がデフォルトで搭載されています。
+ESLint に関連するインストール済みのパッケージは以下 2 つです。
+eslint：構文解析のエンジン
+eslint-config-next：Next.js 専用の ESLint のルール
