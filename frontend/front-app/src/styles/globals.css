@@ -1,3 +1,5 @@
+/* global.css:アプリ全体のスタイリングを記載。どのページでも適用するstyleを書く */
+
 html,
 body {
   padding: 0;

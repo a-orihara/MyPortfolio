@@ -63,4 +63,7 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
+
+  # 開発環境でNginxを使用するために記載
+  Rails.application.config.relative_url_root = "/backend"
 end

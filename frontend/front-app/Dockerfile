@@ -1,5 +1,7 @@
 # FROM node:14-alpine
 # 安定版：16.17.1（22.10.10現在）
 FROM node:16.17.1-slim
+# 環境変数の設定
+ENV FRONT_APP_PATH /usr/src/front-app
 # front-appを作成し、作業ディレクトリに指定。
-WORKDIR /usr/src/front-app
+WORKDIR $FRONT_APP_PATH

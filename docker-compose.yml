@@ -27,19 +27,25 @@ services:
       context: ./backend/api/
       dockerfile: Dockerfile
     # imageとbuildが同時に宣言されている場合, ビルドが優先的に実行されて,
-    # imageはその構成に使われる(imageによるプルは発生しない).
+    # imageはその構成に使われる(imageによるプルは発生しない).結果image名を設定する事になる。
     image: rails-img
     # コンテナ名の指定
     container_name: rails-ctr
     # 5
     # rails s:puma(アプリケーションサーバ)が起動。
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    # ↓nginxなしの場合。
+    # command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: bash -c "rm -f tmp/pids/server.pid && mkdir -p tmp/sockets && mkdir -p tmp/pids && bundle exec puma -C config/puma.rb"
     # 8
     volumes:
       - ./backend/api:/api-app
+      - public-data:/api-app/public
+      - tmp-data:/api-app/tmp
+      - log-data:/api-app/log
     # ポートの指定（外部からのアクセス時のポート：Dockerコンテナからアクセス時のポート）
-    ports:
-      - "3000:3000"
+    # ↓pumaでUNIXドメインソケット通信する為、ポート指定は不要に。
+    # ports↓
+    #   - "3000:3000"
     # 依存関係の指定（railsはDBと接続する際は、DBのIPアドレスを指定する為）。
     depends_on:
       - db
@@ -47,6 +53,25 @@ services:
     stdin_open: true
     # -itのt=tty
     tty: true
+
+  web:
+    build:
+      # ./backend/web/内のDockerfileを使う
+      context: ./backend/web/
+    image: nginx_img
+    container_name: nginx-ctr
+    # UNIXドメインソケット通信によるコンテナ間通信となるため、web・nginxコンテナで名前付きvolumeをマウント
+    # してファイルを共有
+    volumes:
+      - public-data:/api-app/public
+      - tmp-data:/api-app/tmp
+    # ローカル80とコンテナ80を接続
+    ports:
+      - 80:80
+    # apiの次にweb(nginx)が立ち上がる
+    depends_on:
+      - api
+      - front
 
   front: 
     build:
@@ -63,12 +88,12 @@ services:
     depends_on:
       - api
 
-# 記憶領域のマウントを設定(ボリュームマウント)。
-# ここで定義したvolumeはdocker-compose実行時に自動で作成されます。      
+# 記憶領域のマウントを設定(ボリュームマウント)。複数のコンテナ間でボリュームをシェア。
+# ここで定義したvolumeはdocker-compose実行時に自動で作成。このボリュームはホスト側からは独立して永続化。
 volumes:
-  # public-data:
-  # tmp-data:
-  # log-data:
+  public-data:
+  tmp-data:
+  log-data:
   db-data:
     # # このボリュームに対して、どのボリューム・ドライバを使うか指定します。
     # # デフォルトは、Docker Engineで使用するように設定されているドライバであり、多くの場合はlocalです。
@@ -90,13 +115,13 @@ volumes:
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
 # 3
 # データの永続化。ymlファイルはリストの場合は-を付けて記載する。
-# マウント：コンテナからホストのファイルに、まるでコンテナ内にそのファイルがあるかのようにアクセスする。
+# マウント：コンテナからホスト(ローカルPC)のファイルに、まるでコンテナ内にそのファイルがあるかのようにアクセスする。
 # （↑dockerの支配下に置く）
 
 # ボリュームマウント：Docker Engineが管理している領域内にボリュームを作成し、ディスクとしてコンテナにマウントする。
 # 名前だけで管理できるので、手軽に使える反面、直接操作しづらいので、「仮で使いたい場合」や、「滅多に触らないが、
 # 消してはいけないファイル」を置く事に使う事が多い。
-# バインドマウント：PC側のDocker Engineが管理していない場所の、既存のディレクトリにマウントする。
+# バインドマウント：PC側のDocker Engineが管理していない場所の、既存のディレクトリにあるファイルにマウントする。
 # 直接ディレクトリに対してファイルを操作出来るので、頻繁に触りたいファイルはここに置く。
 # - db-data(ボリューム名):/var/lib/mysql:ボリュームマウント
 
@@ -143,6 +168,13 @@ volumes:
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
 # 5
 # -p 3000:(コンテナの)3000番ポート指定して立ち上げ
+
+# 「-p」オプションをつけることで「mkdir path/to/dir」のような復数階層のディレクトリを1回で作成することが
+# できる。
+
+# デフォルトの設定ファイルを指定
+# $ puma -C config/puma.rb
+# *-C: 設定ファイル読み込み
 
 # 仮想環境内の仮想マシン(docker)、もしくは別の物理PCで立ち上がっているRailsアプリケーションを、
 # 仮想環境の外のブラウザで見るためには、ポートをフォーワーディング（転送）する必要があります。

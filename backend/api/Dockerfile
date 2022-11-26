@@ -1,6 +1,7 @@
 # ベースとなるイメージの指定（rubyのバージョン安定版（22/10現在）3.1.2を指定）
 FROM ruby:3.1.2
 
+ENV ROOT="/api-app"
 # ビルド時に実行するコマンドの指定
 # apt-get:Debian系のパッケージを操作・管理するコマンド
 # apt-get update:インストール可能なパッケージの一覧の更新
@@ -15,7 +16,7 @@ RUN apt-get update -qq \
 
 # 作業ディレクトリの指定
 # ここで指定したディレクトリが、その後のDockerfile内でのRUN,COPYなどのあらゆる命令の起点となる。
-WORKDIR /api-app
+WORKDIR ${ROOT}
 COPY Gemfile /api-app/Gemfile
 COPY Gemfile.lock /api-app/Gemfile.lock
 # Gemfileに記載されたGem(初回時はrailsが記載)をインストールする。再ビルド時にbundle installするために記載。
@@ -26,10 +27,14 @@ COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 # 1
 ENTRYPOINT ["entrypoint.sh"]
-# コンテナがホストに対してリッスンするport番号を3000に設定する。
-EXPOSE 3000
+# コンテナがホスト(ローカルPC)に対してリッスンするport番号を3000に設定する。
+# ↓pumaでUNIXドメインソケット通信する為、ポート指定は不要に。
+# EXPOSE 3000
 # イメージの実行時に実行するメインプロセスの設定
-CMD ["rails", "server", "-b", "0.0.0.0"]
+# ↓pumaでUNIXドメインソケット通信する為、ポート指定は不要に。
+# CMD ["rails", "server", "-b", "0.0.0.0"]
+CMD ["rails", "server"]
+
 
 # 1
 # ENTRYPOINTは、コンテナを実行ファイル(executable)として処理するように設定できます。
