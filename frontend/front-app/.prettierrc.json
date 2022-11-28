@@ -5,5 +5,17 @@
   "singleQuote": true,
   "jsxSingleQuote": true,
   "arrowParens": "always",
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "_comments": {
+    "_comments": [
+        ".prettierrc.json:prettieの設定ファイル",
+        "printWidth:1行の最大文字数",
+        "tabWidth:tabの長さは半角スペース2つ",
+        "semi:ステートメントの最後にセミコロンを追加する。",
+        "singleQuote:シングルクォーテーションに統一",
+        "jsxSingleQuote:jsxもシングルクォーテーションに統一",
+        "arrowParens:アロー関数の()が省略可能でも常に書く。",
+        "endOfLine:改行の文字コードを指定.lf : Linux、MacOS、gitリポジトリで一般的な、ラインフィード(\n)のみ"
+    ]
+  }
 }

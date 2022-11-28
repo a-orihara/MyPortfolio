@@ -29,5 +29,12 @@
     "eslint-plugin-react": "^7.31.10",
     "prettier": "^2.7.1",
     "typescript": "4.8.4"
+  },
+  "_comments": {
+    "_comments": [
+        "next lint --dir src:srcディレクトリのみlintを実行",
+        "eslint:構文解析のエンジン。Next.jsバージョン11からデフォルトで搭載",
+        "eslint-config-next:Next.js専用のESLintのルール"
+    ]
   }
 }
