@@ -2,7 +2,7 @@
 { 
   // 2
   "extends": [
-    // "next"="eslint-config-next"
+    // "next"="eslint-config-next(package.json)"
     "next",
     // Core Web Vitalsのルールを追加。
     "next/core-web-vitals",
@@ -27,7 +27,8 @@
 
 // =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =
 // 1
-// ESLintの設定ファイル。デフォルトでeslint-config-nextの設定が適用されている。
+// Next.js の新規プロジェクト作成時に生成されたESLintの設定ファイル。
+// デフォルトでeslint-config-next(package.json)の設定が適用されている。
 // また、Next.js にデフォルトで搭載されたESLintでは、lintコマンドの対象ディレクトリが、
 // 3つ（pages、lib、components）に限定されています。
 
@@ -41,8 +42,7 @@
 // 2
 // extends:設定ファイルを拡張する。Extend はruleのsettingを設定できます。
 // recommendedなどを使うときにextendsを使う。
-
-// ドキュメントには下記記載
+// *ドキュメントには下記記載
 // 設定ファイルを拡張すると、他の設定ファイル（ルール、プラグイン、言語オプションを含む）の特徴をすべて継承し、
 // すべてのオプションを変更することができます。
 

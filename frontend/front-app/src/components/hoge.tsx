@@ -1,9 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 function hoge() {
-  return (
-    <div>hoge</div>
-  )
+  return <div>hoge</div>;
 }
 
-export default hoge
+export default hoge;
