@@ -1,15 +1,19 @@
 // 1
 import type { NextPage } from 'next';
+// Headコンポーネントをimport
 import Head from 'next/head';
 import Image from 'next/image';
-// Home.module.cssのstyleをインストール
+// Home.module.cssのstyleをstylesという名前でimport
+// stylesディレクトリ下のcssファイルはどのコンポーネントからでも使えるcss。
 // cssモジュール(.module.css)を使うと、ビルド時にクラス名やIDへ接頭辞や接語尾がランダムに作成される。
 import styles from '../styles/Home.module.css';
 
 // -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 
+// NextPage型
 const Home: NextPage = () => {
   return (
+    // [Home.module.css]のstyles.container
     <div className={styles.container}>
       {/* 2 */}
       <Head>
@@ -22,6 +26,9 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        <h1 className="text-3xl font-bold underline">
+          Hello world!
+        </h1>
         <h1 className={styles.title}>
           Weaaalcome to <a href='https://nextjs.org'>Next.js!</a>
         </h1>
@@ -70,6 +77,7 @@ const Home: NextPage = () => {
         >
           Powered by{' '}
           <span className={styles.logo}>
+            {/* /public/vercel.svgの省略形 */}
             <Image src='/vercel.svg' alt='Vercel Logo' width={72} height={16} />
           </span>
         </a>
@@ -82,14 +90,23 @@ export default Home;
 
 // =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =
 // 1
+// このファイルはインデックスルート。ルーターはindexという名前のファイルをディレクトリのルートとしてル
+// ーティングします。
 // pagesディレクトリ直下の構成がそのままルーティング構成になる。
 // 例：pages/test/momo.tsx -> localhost:4000/pages/test/momo
 // それぞれのファイル(momo.tsx)で、Reactコンポーネントを返す関数を定義し、その関数をエクスポートする。
 // エクスポートする関数とファイル名は慣習的に同一とする。
 // ※Next.jsでは、デフォルトで全てのページでプリレンダリングが有効化されています。
+// *プリレンダリング:事前にHTMLを生成。通常のReactアプリケーション(SPA)の場合、ユーザーがWebページ
+// にアクセスし、Webページを表示する時にブラウザ側でHTMLを生成します。（クライアントサーバーレンダリ
+// ング）。プリレンダリングでは、ユーザーがアクセスする前に事前にHTMLを生成し、その用意されたHTMLを
+// ユーザーに提供する方式となっています。そのため、ブラウザの負荷を下げて表示を高速化することができます。
+// Next.jsでは、2種類のプリレンダリング方式（SSR・SSG）があり、それぞれページごとに自由に選択して実装
+// することができます。
 
 // -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 // 2
+// Next.jsでは基本的にheadタグを使ってmetaデータを更新する
 // Next.jsにはHeadコンポーネントが用意されており、<head></head>タグの設定はここに書く。
 // headタグ:HTML の文書のヘッド部は、ページが読み込まれてもウェブブラウザーには表示されない部分です。
 // この部分には、例えば、 <title> といった情報や CSS へのリンク（HTML を CSS で修飾する場合）、
@@ -123,6 +140,7 @@ export default Home;
 // 伝えるもので、headタグに書かれます。
 // relでファイルとの関係性を、hrefで そのファイルがある場所（URL）を指定します。
 // rel="stylesheet"や、rel="icon"などがある。
+// ここではタグ部分のアイコン表示に使われている。
 
 // -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 // -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
