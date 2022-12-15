@@ -1,5 +1,7 @@
+// typescriptの設定ファイル
 {
   "compilerOptions": {
+    // TypeScriptがコンパイルを行った際にどのバージョンのECMAScriptで出力するかを指定
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -18,3 +20,5 @@
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
+
+

@@ -10,7 +10,13 @@ module.exports = {
   // 2 テーマの設定:プロジェクトのデフォルトテーマをカスタマイズ
   theme: {
     //  3 extend:デフォルトのテーマを拡張する
-    extend: {},
+    extend: {
+      colors:{
+        'basic-yellow': '#F2CB05',
+        'basic-orange': '#F28705',
+        'basic-pink'  : '#F24B4B' 
+      }
+    },
     // fontFamilyユーティリティを使って、テキストの書体を制御することができます。
     fontFamily: {
       // classに"font-spacemono"の設定で使用可能
