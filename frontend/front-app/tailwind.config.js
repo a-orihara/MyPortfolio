@@ -14,7 +14,9 @@ module.exports = {
       colors:{
         'basic-yellow': '#F2CB05',
         'basic-orange': '#F28705',
-        'basic-pink'  : '#F24B4B' 
+        'basic-pink'  : '#F07171',
+        'hover-yellow': '#FFF33F',
+        'hover-pink'  : '#F24B4B'
       }
     },
     // fontFamilyユーティリティを使って、テキストの書体を制御することができます。

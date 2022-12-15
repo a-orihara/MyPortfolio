@@ -1,8 +1,10 @@
 // Headコンポーネントをimport
 import Head from "next/head"
-import styles from '../styles/Home.module.css';
+// import styles from '../styles/Home.module.css';
 import Image from 'next/image';
 import css from "styled-jsx/css";
+import PrimaryButton from "./atoms/button/PrimaryButton";
+import SecondaryButton from "./atoms/button/SecondaryButton";
 
 
 
@@ -30,8 +32,8 @@ export function Layout(props:Props) {
       
       <header className="bg-basic-orange outline h-20">
           <div>
-            <button className="bg-blue-300">ボタン1</button>
-            <button className="bg-green-300">ボタン2</button>
+            <PrimaryButton>HOME</PrimaryButton>
+            <SecondaryButton>LINK</SecondaryButton>
           </div>
       </header>
 
@@ -54,7 +56,7 @@ export function Layout(props:Props) {
 
       <footer className="bg-basic-yellow outline md:h-14 h-11">
         フッター
-        <span className={styles.logo}>
+        <span >
             {/* /public/vercel.svgの省略形 */}
             <Image src='/vercel.svg' alt='Vercel Logo' width={72} height={16} />
         </span>

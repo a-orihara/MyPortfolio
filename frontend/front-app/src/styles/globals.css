@@ -9,6 +9,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 共通の設定をclassとして */
+@layer components {
+  .btn-primary {
+    @apply border-2 border-black text-black rounded px-20 py-4 m-2 transition duration-300 select-none font-spacemono text-2xl;
+  }
+}
+
 
 /* * {
   font-family: "ヒラギノ角ゴ";
