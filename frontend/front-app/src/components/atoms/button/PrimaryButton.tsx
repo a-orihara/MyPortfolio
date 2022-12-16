@@ -1,13 +1,29 @@
 import React from 'react'
+// next/routerは、routerオブジェクトにアクセスするためのパッケージです。
+import { useRouter } from 'next/router'
 
 type Props = {
-  children: React.ReactNode
+  children: React.ReactNode;
+  onClick?: () => void;
 }
 
+
+
+
+
 const PrimaryButton = (props:Props):JSX.Element => {
+  const router = useRouter()
+
+  const onClickHome = ():void => {
+    router.push("/")
+  }
+
   return (
     // childrenでボタンの名称を受け取って使い回しできるようにする
-    <button className="btn-primary bg-basic-yellow hover:bg-hover-yellow">
+    <button 
+      onClick={onClickHome} 
+      className="btn-primary bg-basic-yellow hover:bg-hover-yellow"
+    >
       {props.children}
     </button>
   )
@@ -17,7 +33,11 @@ export default PrimaryButton
 
 
 
+// React Hooksは、
 
+// 関数コンポーネント・カスタムフック内
+// トップレベルのみ(ループや条件分岐・ネストされた関数内で呼び出してはいけない)
+// でしか呼び出すことができません。
 // =        ==        ==        ==        ==        ==        ==        ==        =
 // CSS
 

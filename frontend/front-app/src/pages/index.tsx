@@ -17,7 +17,7 @@ const Home: NextPage = () => {
     // [Home.module.css]のstyles.container
     <div className="py-0 px-2 text-2xl">
       <Layout title="momo">
-        momo
+        <p>渡されたチルドレン</p>
       </Layout>
   
       {/* container:要素の幅を現在のブレークポイントに固定するためのコンポーネント */}
@@ -40,6 +40,8 @@ export default Home;
 // 1
 // このファイルはインデックスルート。ルーターはindexという名前のファイルをディレクトリのルートとしてル
 // ーティングします。
+// URL で末尾のファイルを指定しない場合は、自動的にそのディレクトリ内の index.js にアクセスされるように
+// なります。
 // pagesディレクトリ直下の構成がそのままルーティング構成になる。
 // 例：pages/test/momo.tsx -> localhost:4000/pages/test/momo
 // それぞれのファイル(momo.tsx)で、Reactコンポーネントを返す関数を定義し、その関数をエクスポートする。

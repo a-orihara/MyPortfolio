@@ -27,7 +27,7 @@ export function Layout(props:Props) {
         <meta charSet="utf-8" />
         <meta name='description' content='ホラー映画好きが集まる投稿サイトです' />
         {/* 4 */}
-        <link rel='icon' href='/favicon.ico' />
+        <link rel='icon' href='/favicon.png' />
       </Head>
       
       <header className="bg-basic-orange outline h-20">
@@ -43,10 +43,7 @@ export function Layout(props:Props) {
           {/* space:Space Between 子要素間のスペースを制御するためのユーティリティ。 */}
           {/* space-x-{amount}ユーティリティを使用して、要素間の水平方向のスペースを制御します。 */}
 
-          <div className="space-x-10">
-            <button className="bg-blue-300 hover:bg-pink-300">button</button>
-            <button className="bg-green-300 font-spacemono">button</button>
-          </div>
+          
         </nav>
         <main className="bg-basic-pink outline flex-1">
           <h1>メインコンテンツ</h1>
