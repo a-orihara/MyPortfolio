@@ -12,14 +12,14 @@
 /* 共通の設定をclassとして */
 @layer components {
   .btn-primary {
-    @apply border-2 border-black text-black tracking-widest font-semibold rounded px-20 py-4 m-2 transition duration-300 select-none font-spacemono text-2xl;
+    @apply border-2 border-black text-black font-normal md:font-medium rounded px-5 md:px-10 py-2 md:py-4 m-2 transition duration-300 select-none font-spacemono text-lg md:text-2xl tracking-tighter;
   }
 }
 
 
-/* * {
-  font-family: "ヒラギノ角ゴ";
-} */
+h1 {
+  font-family: cursive;
+}
 
 /* html,
 body {

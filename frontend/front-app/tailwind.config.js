@@ -12,11 +12,14 @@ module.exports = {
     //  3 extend:デフォルトのテーマを拡張する
     extend: {
       colors:{
-        'basic-yellow': '#F2CB05',
-        'basic-orange': '#F28705',
-        'basic-pink'  : '#F07171',
-        'hover-yellow': '#FFF33F',
-        'hover-pink'  : '#F24B4B'
+        'basic-yellow'    : '#F2CB05',
+        'basic-orange'    : '#F28705',
+        'basic-pink'      : '#F07171',
+        'hover-yellow'    : '#FFF33F',
+        'hover-pink'      : '#F24B4B',
+        'hover-orange'    : '#fef08a',
+        'font-color-green': '#0f7d3b',
+        
       }
     },
     // fontFamilyユーティリティを使って、テキストの書体を制御することができます。

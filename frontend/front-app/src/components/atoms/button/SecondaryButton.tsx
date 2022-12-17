@@ -7,7 +7,7 @@ type Props = {
 const SecondaryButton = (props:Props):JSX.Element => {
   return (
     // childrenでボタンの名称を受け取って使い回しできるようにする
-    <button className="btn-primary bg-basic-pink hover:bg-hover-pink">
+    <button className="btn-primary bg-basic-yellow hover:bg-hover-yellow">
       {props.children}
     </button>
   )

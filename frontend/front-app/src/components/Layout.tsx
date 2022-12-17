@@ -17,7 +17,7 @@ type Props = {
 
 // 関数コンポーネントは型指定しないと、JSX.Element型になる
 // 現在FC、VFCは使われない傾向。下記のようにpropsに型指定する。
-export function Layout(props:Props) {
+export const Layout = (props:Props) => {
   return (
     // jsx(tsx)ではclassNameを使用
     <div className="flex flex-col min-h-screen container mx-auto basic-yellow outline">
@@ -30,33 +30,30 @@ export function Layout(props:Props) {
         <link rel='icon' href='/favicon.png' />
       </Head>
       
-      <header className="bg-basic-orange outline h-20">
-          <div>
-            <PrimaryButton>HOME</PrimaryButton>
-            <SecondaryButton>LINK</SecondaryButton>
-          </div>
+      <header className="flex items-center bg-basic-yellow outline h-20">
+        <h1 className="mr-auto text-s md:text-2xl font-spacemono text-center tracking-tighter font-semibold">
+          Horror Domo App
+        </h1>
+        <PrimaryButton>HOME</PrimaryButton>
+        <PrimaryButton>Log in</PrimaryButton>
       </header>
 
       <div className="flex flex-col md:flex-row flex-1">
-        <nav className="bg-orange-300 outline md:w-56">
-          <h1 className="text-3xl">ナビゲーション</h1>
-          {/* space:Space Between 子要素間のスペースを制御するためのユーティリティ。 */}
-          {/* space-x-{amount}ユーティリティを使用して、要素間の水平方向のスペースを制御します。 */}
-
-          
-        </nav>
-        <main className="bg-basic-pink outline flex-1">
-          <h1>メインコンテンツ</h1>
+        {/* <nav className="bg-orange-300 outline md:w-56"> */}
+        {/* </nav> */}
+        <main className="bg-basic-orange outline flex-1">
+    
           {props.children}
+          
         </main>
       </div>
 
-      <footer className="bg-basic-yellow outline md:h-14 h-11">
-        フッター
-        <span >
+      <footer className="bg-basic-yellow outline md:h-14 h-11 flex justify-center items-center text-black text-sm">
+        @Ori 2022
+        {/* <span > */}
             {/* /public/vercel.svgの省略形 */}
-            <Image src='/vercel.svg' alt='Vercel Logo' width={72} height={16} />
-        </span>
+            {/* <Image src='/vercel.svg' alt='Vercel Logo' width={72} height={16} /> */}
+        {/* </span> */}
       </footer>
     </div>
 
@@ -122,3 +119,7 @@ export function Layout(props:Props) {
 
 // md:@media (min-width: 768px) 
 // スクリーンサイズが768px以上の場合に適用
+
+// mr-auto:margin-right: auto;
+// marginの値にautoを指定すると、[親要素の横幅 - 指定した要素の横幅]によりmarginを自動で算出します。
+// 子要素が左寄せになる

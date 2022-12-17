@@ -7,6 +7,7 @@ import type { NextPage } from 'next';
 // cssモジュール(.module.css)を使うと、ビルド時にクラス名やIDへ接頭辞や接語尾がランダムに作成される。
 import styles from '../styles/Home.module.css';
 import { Layout } from '../components/Layout';
+import SecondaryButton from '../components/atoms/button/SecondaryButton';
 // import Hoge from '../components/Hoge';
 
 // -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
@@ -15,9 +16,16 @@ import { Layout } from '../components/Layout';
 const Home: NextPage = () => {
   return (
     // [Home.module.css]のstyles.container
-    <div className="py-0 px-2 text-2xl">
-      <Layout title="momo">
-        <p>渡されたチルドレン</p>
+    <div>
+      <Layout title="HOME">
+        <div className="mx-auto px-6 py-16 pt-28 text-center">
+          <h1 className="mb-36 text-4xl font-spacemono scale-y-150 text-center tracking-tighter font-semibold text-black md:text-6xl">
+            Welcome to the Horror Domo App!  
+          </h1>
+          <div className="pt-10">
+            <SecondaryButton>Sign up!</SecondaryButton>  
+          </div>
+        </div>
       </Layout>
   
       {/* container:要素の幅を現在のブレークポイントに固定するためのコンポーネント */}
