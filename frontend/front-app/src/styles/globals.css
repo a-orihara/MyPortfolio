@@ -1,27 +1,44 @@
-/* global.css:アプリ全体のスタイリングを記載。どのページでも適用するstyleを書く */
+/* global.css:アプリ全体のスタイリングを記載。どのページでも適用するstyleを書く
+基本_app.js以外では呼び出さない。 */
 
+/* Tailwind CSSのフォント設定。GoogleフォントからSpace Monoを@import。 */
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+/* Tailwindのディレクティブ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html,
+/* 共通の設定をclassとして */
+@layer components {
+  .btn-primary {
+    @apply border-2 border-black text-black font-normal md:font-medium rounded px-5 md:px-10 py-2 md:py-4 m-2 transition duration-300 select-none font-spacemono text-lg md:text-2xl tracking-tighter;
+  }
+}
+
+
+h1 {
+  font-family: cursive;
+}
+
+/* html,
 body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
+} */
 
-a {
+/* a {
   color: inherit;
   text-decoration: none;
 }
 
 * {
   box-sizing: border-box;
-}
+} */
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
@@ -29,4 +46,4 @@ a {
     color: white;
     background: black;
   }
-}
+} */

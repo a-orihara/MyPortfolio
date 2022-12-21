@@ -1,4 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+
+// pages/api以下に置いたファイルではAPIを定義する。ページと同様にファイルの場所によってパスが決まる。
+// ビルド時は使うことができない
+
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 type Data = {
