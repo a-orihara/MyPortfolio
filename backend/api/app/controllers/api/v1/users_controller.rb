@@ -8,7 +8,8 @@ module Api
 
       # GET:/users
       def index
-        @users = User.all
+        # @usersでなくてもいい
+        users = User.all
       end
 
     end
