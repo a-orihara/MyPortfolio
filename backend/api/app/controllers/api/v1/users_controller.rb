@@ -5,6 +5,12 @@ module Api
     class UsersController < ApplicationController
       def new
       end
+
+      # GET:/users
+      def index
+        @users = User.all
+      end
+
     end
   end
 end

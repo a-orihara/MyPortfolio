@@ -8,12 +8,16 @@ import type { NextPage } from 'next';
 import styles from '../styles/Home.module.css';
 import { Layout } from '../components/Layout';
 import SecondaryButton from '../components/atoms/button/SecondaryButton';
+import { fetchUsers } from '../api/users';
 // import Hoge from '../components/Hoge';
 
 // -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 
 // 5 NextPage型
 const Home: NextPage = () => {
+
+  console.log(fetchUsers);
+  
   return (
     // [Home.module.css]のstyles.container
     <div>
