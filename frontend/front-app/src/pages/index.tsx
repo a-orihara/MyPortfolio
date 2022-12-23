@@ -8,16 +8,34 @@ import type { NextPage } from 'next';
 import styles from '../styles/Home.module.css';
 import { Layout } from '../components/Layout';
 import SecondaryButton from '../components/atoms/button/SecondaryButton';
-import { fetchUsers } from '../api/users';
+import { fetchJson, axiosRailsUsers,  axiosJson, fetchRailsUsers } from '../api/users';
 // import Hoge from '../components/Hoge';
 
 // -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 
+// console.log("kaka")
+// console.log(fetchTest)
+// console.log(axiosTest)
 // 5 NextPage型
 const Home: NextPage = () => {
 
-  console.log(fetchUsers);
+  // console.log("axiosFetch")
+  // fetchJson()
+  // console.log("axiosJson")
+  // axiosJson()
+
+  // axiosRailsUsers()
+  console.log("ここだよー")
+
+  fetchRailsUsers()
+
+
   
+
+  
+
+  // console.log(`abc:${a}`);
+
   return (
     // [Home.module.css]のstyles.container
     <div>
@@ -26,6 +44,7 @@ const Home: NextPage = () => {
           <h1 className="mb-36 text-4xl font-spacemono scale-y-150 text-center tracking-tighter font-semibold text-black md:text-6xl">
             Welcome to the Horror Domo App!  
           </h1>
+          
           <div className="pt-10">
             <SecondaryButton>Sign up!</SecondaryButton>  
           </div>
