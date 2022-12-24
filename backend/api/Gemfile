@@ -28,7 +28,8 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # [Cross-Origin Resource Sharing（CORS）の処理にRack CORSを使用し、クロスオリジンAJAXを可能にする]
-# gem 'rack-cors'
+# CORS利用で下記のコメントアウトを外す。
+gem 'rack-cors'
 
 # Rails 6.1.6を使用し、Ruby 3.1系を使用すると出るエラーの為、下記3つのgemをinstall
 gem 'net-smtp'

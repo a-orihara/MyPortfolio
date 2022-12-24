@@ -13,6 +13,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    // 1
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true
@@ -21,4 +22,17 @@
   "exclude": ["node_modules"]
 }
 
+/* 
+=        ==        ==        ==        ==        ==        ==        ==        =
+1
+isolatedModules:単一ファイルのトランスパイルで正しく型解釈できない特定のコードを書いた場合に
+コンパイルエラーを出すフラグです。デフォルトはfalseとなっています(create next app では初め
+からtrue)。
+フラグをtrueにしている場合にコンパイルエラーとなるコードは以下のようなものがあります。
+1.型のみの再エクスポートファイル
+2.export も import もしていないファイル
+3.const enum メンバーへの参照をしているファイル
+
+
+*/ 
 
