@@ -25,6 +25,7 @@ const Home: NextPage = () => {
   // axiosJson()
 
   // axiosRailsUsers()
+
   console.log("ここだよー")
 
   fetchRailsUsers()
