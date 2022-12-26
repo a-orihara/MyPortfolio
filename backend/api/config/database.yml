@@ -7,16 +7,18 @@ default: &default # 使用するデータベース種類
   encoding: utf8mb4
   # 3
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  # usernameは特に設定がなければデフォルトでroot
   username: <%= ENV.fetch("MYSQL_ROOT_USER") { 'root' } %>
+  # passwordは特に設定がなければデフォルトでpassword
   # githubへ上げる事を想定してパスワードはなるべくなら環境変数で設定した方がいい
   password: <%= ENV.fetch("MYSQL_ROOT_PASSWORD") { 'password' } %>
-  # host: localhostからの変更。データベースのアクセス先にdbを指定。
+  # host: localhost(自分のPC)からの変更。データベースのアクセス先にdb(docker-composeのサービス名)を指定。
   host: db
 
 #  デフォルトでは、開発環境のdbを参照する。
 development:
   <<: *default
-  # api-app:このアプリの名前。
+  # database:データベース名。api-app:このアプリの名前。
   database: api_app_development
 
 # 4
@@ -27,9 +29,15 @@ test:
 # 5
 production:
   <<: *default
-  database: api_app_production
-  username: api_app
+  database: <%= ENV['API_APP_DATABASE_NAME'] %>
+  username: <%= ENV['API_APP_USERNAME'] %>
   password: <%= ENV['API_APP_DATABASE_PASSWORD'] %>
+# RDS時、参考
+# DB_USERNAME="RDSの接続ユーザ名"
+# DB_PASSWORD="RDSのパスワード"
+# DB_HOST="RDSのエンドポイント名"
+# DB_DATABASE="myapp"
+
 # =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =
 # 1
 # Railsにおけるデータベースの設定ファイル。
@@ -80,12 +88,16 @@ production:
 
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 # 5
+# productionの設定においては、database、username、passwordはベタ書きせずに、環境変数で保存する。
+# .envに保存するので、gitプッシュされない。
+
+# 参考情報
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
 # ever seen by anyone, they now have access to your database.
 # [config/credentials.yml と同様、機密情報をソースコードに保存することは決してありません。
 # データベースのパスワードのような機密情報をソースコードに保存してはいけません。もしあなたのソースコードが
-# もしあなたのソースコードが誰かに見られたら、彼らはあなたのデータベースにアクセスすることができるのです。]
+# 誰かに見られたら、彼らはあなたのデータベースにアクセスすることができるのです。]
 #
 # Instead, provide the password or a full connection URL as an environment
 # variable when you boot the app. For example:
@@ -109,3 +121,4 @@ production:
 # https://guides.rubyonrails.org/configuring.html#configuring-a-database をご覧ください。]
 #
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
+
