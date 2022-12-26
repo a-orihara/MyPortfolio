@@ -36,6 +36,9 @@ gem 'net-smtp'
 gem 'net-imap'
 gem 'net-pop'
 
+# 2
+gem 'dotenv-rails'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # [コード中の任意の場所で 'byebug' を呼び出すと、実行が停止し、デバッガコンソールが表示されます。]
@@ -57,9 +60,17 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 
-# 1
-# ~>:マイナーバージョンの部分に相当するアップデート済みの gem をインストール。
-# ref:'~>1.2.3':（1.2.3以上1.3.0未満）。
-# '>= X.X.X': X.X.X以上
-# ref:'~> 6.1.6', '>= 6.1.6.1': マイナーバージョン6.1で、かつ6.1.6.1以上（6.2にはならない）。
+=begin
+=        ==        ==        ==        ==        ==        ==        ==        ==        =
+1
+~>:マイナーバージョンの部分に相当するアップデート済みの gem をインストール。
+ref:'~>1.2.3':（1.2.3以上1.3.0未満）。
+'>= X.X.X': X.X.X以上
+ref:'~> 6.1.6', '>= 6.1.6.1': マイナーバージョン6.1で、かつ6.1.6.1以上（6.2にはならない）。
 
+-        --        --        --        --        --        --        --        --        -
+2
+環境変数を管理する事が出来るgemです。アプリのプロジェクトルート配下に「環境変数を定義する.envファイル」を設置
+すると、自動で読み込まれます。
+
+=end
