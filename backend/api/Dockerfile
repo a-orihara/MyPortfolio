@@ -16,7 +16,7 @@ RUN apt-get update -qq \
 
 # 作業ディレクトリの指定
 # ここで指定したディレクトリが、その後のDockerfile内でのRUN,COPYなどのあらゆる命令の起点となる。
-WORKDIR ${ROOT}
+WORKDIR $ROOT
 COPY Gemfile /api-app/Gemfile
 COPY Gemfile.lock /api-app/Gemfile.lock
 # Gemfileに記載されたGem(初回時はrailsが記載)をインストールする。再ビルド時にbundle installするために記載。

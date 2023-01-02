@@ -7,11 +7,12 @@ default: &default # 使用するデータベース種類
   encoding: utf8mb4
   # 3
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  # usernameは特に設定がなければデフォルトでroot
-  username: <%= ENV.fetch("MYSQL_ROOT_USER") { 'root' } %>
-  # passwordは特に設定がなければデフォルトでpassword
+  # 接続に使用するユーザの名前。
+  # usernameは特に設定がなければデフォルトでroot:<%= ENV.fetch("MYSQL_ROOT_USER") { 'root' } %>
+  username: <%= ENV.fetch("MYSQL_ROOT_USER") %>
+  # 接続する際に利用するパスワード。passwordは特に設定がなければデフォルトでpassword
   # githubへ上げる事を想定してパスワードはなるべくなら環境変数で設定した方がいい
-  password: <%= ENV.fetch("MYSQL_ROOT_PASSWORD") { 'password' } %>
+  password: <%= ENV.fetch("MYSQL_ROOT_PASSWORD") %>
   # host: localhost(自分のPC)からの変更。データベースのアクセス先にdb(docker-composeのサービス名)を指定。
   host: db
 
@@ -19,6 +20,7 @@ default: &default # 使用するデータベース種類
 development:
   <<: *default
   # database:データベース名。api-app:このアプリの名前。
+  # api_app_developmentという名前のDBをMysqlの中に作成
   database: api_app_development
 
 # 4
@@ -29,9 +31,10 @@ test:
 # 5
 production:
   <<: *default
-  database: <%= ENV['API_APP_DATABASE_NAME'] %>
-  username: <%= ENV['API_APP_USERNAME'] %>
-  password: <%= ENV['API_APP_DATABASE_PASSWORD'] %>
+  database: <%= ENV.fetch('API_APP_DATABASE_NAME_PROD') %>
+  # database: <%= ENV['API_APP_DATABASE_NAME'] %>
+  username: <%= ENV.fetch('API_APP_USERNAME_PROD') %>
+  password: <%= ENV.fetch('API_APP_DATABASE_PASSWORD_PROD') %>
 # RDS時、参考
 # DB_USERNAME="RDSの接続ユーザ名"
 # DB_PASSWORD="RDSのパスワード"

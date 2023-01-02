@@ -1,0 +1,153 @@
+# # FROM node:14-alpine
+# # 安定版16.17.1（22.10.10現在）
+# node:16 までは、slim == Debian 10 (buster) へのエイリアスとなっています。
+# FROM node:16.17.1-slim
+# # 匿名での情報収集を拒否する設定
+# ENV NEXT_TELEMETRY_DISABLED 1
+# # 環境変数の設定
+
+
+# RUN npm install --frozen-lockfile 
+# RUN npm run build
+
+
+# =        ==        ==        ==        ==        ==        ==        ==        ==        =
+# 基本的な流れ
+# package.jsonとpackage-lock.jsonをコピー
+# npm ci node_moudlesが作成される
+# コードとまるっとコピー
+# npm build
+# npm start
+
+# もしくは
+
+# コードとまるっとコピー
+# npm install
+# npm build
+# RUN rm -rf node_modules
+# npm install -production(productin環境のみのライブラリをインスト)
+# npm start
+
+
+# マルチステージビルドの利用。イメージサイズを小さく抑える為に行う。
+# ref:https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
+# 1
+
+# 依存パッケージ(各種ライブラリ)のインストール
+# 2 alpine:Linuxのディストリビューション。軽量なAlpine上でNodeJSのv16系を動かす。Alpine Linux はほとん
+FROM node:16-alpine AS deps
+# node.jsの本番環境
+# ENV NODE_ENV production
+# 3
+RUN apk add --no-cache libc6-compat
+# 匿名での情報収集を拒否する設定
+ENV NEXT_TELEMETRY_DISABLED 1
+ENV FRONT_APP_PATH /usr/src/front-app
+# front-appを作成し、作業ディレクトリに指定。
+WORKDIR $FRONT_APP_PATH
+# packeg.jsonとpackage-lock.jsonのみコピーする
+# WORKDIR $FRONT_APP_PATHしているので、指定先は./=（/usr/src/front-app/以下）で大丈夫
+COPY package.json package-lock.json ./
+# 4
+RUN npm ci --only=production
+
+# -       --       --       --       --       --       --       --       -
+# 必要なときだけソースコードをリビルドする
+FROM node:16-alpine AS builder
+# ENV NODE_ENV production
+ENV FRONT_APP_PATH /usr/src/front-app
+WORKDIR $FRONT_APP_PATH
+# 逆?
+COPY . .
+# --from=deps:depsステージを参照(本番環境のみのライブラリが入った、node_modules書き換え？)
+COPY --from=deps /app/node_modules ./node_modules
+# .nextフォルダが作成
+RUN npm run build
+
+# -       --       --       --       --       --       --       --       -
+# プロダクション・イメージを作成し、すべてのファイルをコピーして、次に実行します。
+FROM node:16-alpine
+ENV NODE_ENV production
+ENV FRONT_APP_PATH /usr/src/front-app
+WORKDIR $FRONT_APP_PATH
+ENV NEXT_TELEMETRY_DISABLED 1
+
+# COPYコマンドは適切なアクセス権を持つユーザーで実行の必要？
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# 初期設定のままであれば不要
+COPY --from=builder /app/next.config.js next.config.js 
+# ファビコンが格納されたディレクトリをコピーする
+COPY --from=builder /app/public ./public
+# buildによって.next配下に生成されたhtml、JSON、JSファイルをコピーする
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder /app/package.json ./package.json
+# 必要なら
+# COPY --from=builder /app/.env .env
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+# COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+
+EXPOSE 3000
+
+ENV PORT 3000
+# 5
+CMD [ "npm", "start" ]
+
+# =        ==        ==        ==        ==        ==        ==        ==        ==        =
+# 1
+# アプリケーションの依存パッケージのインストール、build環境と,実行環境を分離して、実行環境には最終的な成果物だけを配置することによりimageサイズ
+# の縮小を図ります。
+
+# 「2番目のステージで、1番目のステージで生成したものの中から必要なものだけコピーして、あとは放置」
+# マルチステージビルドを行うには、Dockerfile 内にFROM行を複数記述します。 各FROM命令のベースイメージは、それ
+# ぞれに異なるものとなり、各命令から新しいビルドステージが開始されます。 イメージ内に生成された内容を選び出して、
+# 一方から他方にコピーすることができます。 そして最終イメージに含めたくない内容は、放っておくことができます。
+
+# -        --        --        --        --        --        --        --        --        -
+# 2
+# デフォルトではステージに名前はつきません。 そこでステージを参照するには、ステージを表わす整数値を用います。 
+# この整数値は、最初のFROM命令を 0 として順次割り振られるものです。 ただしFROM命令にAS <NAME>の構文を加えれば、
+# ステージに名前をつけることができます。 
+
+# マルチステージビルドの利用にあたって、ステージのコピーは Dockerfile 内での直前のステージだけに限定されるもの
+# ではありません。 COPY --from命令では別のイメージからコピーすることができます。 その際にはローカルや Docker
+# レジストリ上のイメージ名、タグ名、あるいはタグ ID を指定します。 Docker クライアントは必要なときにはイメージ
+# を取得します。 そしてそこから構築内容をコピーします。
+# e.g:[COPY --from=nginx:latest /etc/nginx/nginx.conf /nginx.conf]
+
+# -        --        --        --        --        --        --        --        --        -
+# 3
+# apk:Alpine Linuxで使用できる、パッケージ管理コマンド。aptみたいなもの。apk add:インストールする。
+# node:alpineで不足しがちな共有ライブラリを追加
+
+# --no-cache:キャッシュを削除。
+# Alpine LinuxベースでDockerイメージを作るとき、 apk add でパッケージインストールする前に apk update 
+# しないといけない。これは次のように一行で書ける。
+# apk --update add
+# ただ、これは /var/cache/apk/ にキャッシュを生成する(.tar.gz 形式のファイル)。
+# 続いてDockerイメージは可能な限り小さくしたいので、キャッシュを削除する為、
+# rm -rf /var/cache/apk/*
+# するところを、--no-cache オプションを使うことで、キャッシュを削除してくれる。
+# apk --no-cache add
+
+# libc6-compat:ライブラリパッケージ
+# よくある問題として、process.dlopen を使用するために必要な共有ライブラリが不足していることがあります。足りな
+# い共有ライブラリをイメージに追加するには、Dockerfile に libc6-compat パッケージを追加することが推奨されます。
+
+# -        --        --        --        --        --        --        --        --        -
+# 4
+# yarn --frozen-lockfileと同じ意味
+# npm ci は下記の動作をします
+# node_modules ディレクトリの削除
+# package-lock.json と package.json の整合性のチェック
+# package-lock.json から node_modules を再現
+
+# --only=production オプションでプロダクション環境では不要なdevDependenciesなパッケージを削除しimageサイズ
+# を抑えることができます。
+
+# -        --        --        --        --        --        --        --        --        -
+# 5
+# 開発時は npm run dev で自動ビルドまでセットになった開発サーバーを起動しましたが、リリース用にはnpm run build
+# で明示的にビルドし、その内容を npm start の本番サーバーでホスティングします。
