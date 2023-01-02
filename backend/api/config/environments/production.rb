@@ -4,7 +4,9 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
-  config.cache_classes = true
+  # [リクエスト間でコードが再ロードされることはない。]
+  # 1
+  config.cache_classes = false
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
@@ -111,3 +113,13 @@ Rails.application.configure do
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 end
+
+=begin
+=        ==        ==        ==        ==        ==        ==        ==        ==        =
+1
+デフォルトはtrue
+*本番環境のデプロイの際、下記エラーが出た場合、falseへ
+[Spring reloads, and therefore needs the application to have reloading enabled.
+Please, set config.cache_classes to false in config/environments/production.rb.
+Please, set config.cache_classes to false in config/environments/production.rb.]
+=end
