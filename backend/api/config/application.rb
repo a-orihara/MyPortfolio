@@ -1,3 +1,6 @@
+# このファイルは、railsの環境は、開発環境（development）、テスト環境(test)、本番環境(production)のすべて
+# の環境に共通の設定を記述したファイル
+
 require_relative "boot"
 
 require "rails"

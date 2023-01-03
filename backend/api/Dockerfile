@@ -29,7 +29,7 @@ RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 # コンテナがホスト(ローカルPC)に対してリッスンするport番号を3000に設定する。
 # ↓pumaでUNIXドメインソケット通信する為、ポート指定は不要に。
-# EXPOSE 3000
+EXPOSE 3000
 # イメージの実行時に実行するメインプロセスの設定
 # ↓pumaでUNIXドメインソケット通信する為、ポート指定は不要に。
 # CMD ["rails", "server", "-b", "0.0.0.0"]

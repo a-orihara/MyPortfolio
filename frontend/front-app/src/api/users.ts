@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const DEFAULT_API_LOCALHOST = 'http://localhost/backend//api/v1'
+const DEFAULT_API_LOCALHOST = 'http://localhost/backend/api/v1'
 
 const userIndex = `${DEFAULT_API_LOCALHOST}/users`
 

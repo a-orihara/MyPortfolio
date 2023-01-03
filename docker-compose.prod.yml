@@ -1,4 +1,3 @@
-# 1
 version: "3.8"
 
 # services=コンテナ
@@ -7,7 +6,7 @@ services:
     # イメージの指定
     image: mysql:8.0
     # コンテナ名の指定
-    container_name: mysql-ctr
+    container_name: mysql-ctr-prod
     # 2
     command: --default-authentication-plugin=mysql_native_password
     # 3 同期する
@@ -16,7 +15,7 @@ services:
     # 4
     env_file:
       - ./backend/api/.env
-    # ローカル3306とコンテナ3306を接続
+    # ローカル4306とコンテナ4306を接続。3306をdevで使用の為
     ports:
       - '3306:3306'
 
@@ -28,18 +27,19 @@ services:
       dockerfile: Dockerfile
     # imageとbuildが同時に宣言されている場合, ビルドが優先的に実行されて,
     # imageはその構成に使われる(imageによるプルは発生しない).結果image名を設定する事になる。
-    image: rails-img
+    image: rails-img-prod
     # コンテナ名の指定
-    container_name: rails-ctr
+    container_name: rails-ctr-prod
     env_file:
       - ./backend/api/.env
     # 5
-    # rails s:puma(アプリケーションサーバ)が起動。
-    # ↓nginxなしの場合。コンテナ（ホストではない）が3000番ポートで待ち受けるの意味。
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
-    # command: bash -c "rm -f tmp/pids/server.pid && mkdir -p tmp/sockets && mkdir -p tmp/pids && bundle exec puma -C config/puma.rb"
+    # rails s:puma(アプリケーションサーバ)が起動。「-C」でPumaの設定ファイルを指定することが可能。
+    # ↓nginxなしの場合。
+    # command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -e production -p 3000 -b '0.0.0.0'"
     # ↓productionモードではディレクトリ内にconfig/master.keyとconfig/credentials.ymlというファイルが必要。
-    # command: bash -c "rm -f tmp/pids/server.pid && mkdir -p tmp/sockets && bundle exec puma -C config/puma.rb"
+    command: bash -c "rm -f tmp/pids/server.pid && mkdir -p tmp/sockets && mkdir -p tmp/pids && bundle exec puma -C config/puma/production.rb"
+    # command: bash -c "rm -f tmp/pids/server.pid && mkdir -p tmp/sockets && mkdir -p tmp/pids && bundle exec puma -C config/puma.rb"
+
 
     # 8
     volumes:
@@ -47,9 +47,6 @@ services:
       - public-data:/api-app/public
       - tmp-data:/api-app/tmp
       - log-data:/api-app/log
-    # 9
-    ports:
-      - '80:3000'
     # 依存関係の指定（railsはDBと接続する際は、DBのIPアドレスを指定する為）。
     depends_on:
       - db
@@ -58,38 +55,38 @@ services:
     # -itのt=tty
     tty: true
 
-  # web:
-  #   build:
-  #     # ./backend/web/内のDockerfileを使う
-  #     context: ./backend/web/
-  #   image: nginx_img
-  #   container_name: nginx-ctr
-  #   # UNIXドメインソケット通信によるコンテナ間通信となるため、web・nginxコンテナで名前付きvolumeをマウント
-  #   # してファイルを共有
-  #   volumes:
-  #     - public-data:/api-app/public
-  #     - tmp-data:/api-app/tmp
-  #   # ローカル80とコンテナ80を接続
-  #   ports:
-  #     - 80:80
-  #   # apiの次にweb(nginx)が立ち上がる
-  #   depends_on:
-  #     - api
-  #     - front
+  web:
+    build:
+      # ./backend/web/内のDockerfileを使う
+      context: ./backend/web/
+    image: nginx_img
+    container_name: nginx-ctr-prod
+    # UNIXドメインソケット通信によるコンテナ間通信となるため、web・nginxコンテナで名前付きvolumeをマウント
+    # してファイルを共有
+    volumes:
+      - public-data:/api-app/public
+      - tmp-data:/api-app/tmp
+    # ローカル80とコンテナ80を接続
+    ports:
+      - 80:80
+    # apiの次にweb(nginx)が立ち上がる
+    depends_on:
+      - api
+      - front
 
   front: 
     build:
       context: ./frontend/front-app
-      dockerfile: Dockerfile.dev
-    image: nextjs-img
-    container_name: nextjs-ctr
+      dockerfile: Dockerfile.prod
+    image: nextjs-img-prod
+    container_name: nextjs-ctr-prod
     # 同期する
-    volumes:
-      - ./frontend/front-app:/usr/src/front-app
+    # volumes:
+    #   - ./frontend/front-app:/usr/src/front-app
     # 作業ディレクトリ/front-appをに指定しているので、'npm run dev'のみでOK
-    command: 'npm run dev'
+    # command: 'npm run dev'
     ports:
-      - "4000:3000"
+      - "5000:3000"
     depends_on:
       - api
 
@@ -181,6 +178,14 @@ volumes:
 # $ puma -C config/puma.rb
 # *-C: 設定ファイル読み込み
 
+# Pumaではデフォルトの設定ファイルであるconfig/puma.rbのほか、実行環境に応じたconfig/puma/[実行環境].rbという設定
+# ファイルを用意できます。
+# rails sの場合はconfig/puma/[環境名].rb → config/puma.rbの優先順位で設定ファイルを読み込みます。
+# Railsアプリケーションのデフォルトの実行環境はdevelopmentなので、rails sで起動すればconfig/puma/development.rb →
+# config/puma.rbの順で設定ファイルの有無を確認します。そして、ファイルが存在すれば設定を読み込みます
+# 一方、rails s -e productionもしくはENV[RAILS_ENV] = productionの実行環境でrails sを起動すればconfig/puma/
+# production.rb → config/puma.rbの順で設定ファイルの有無を確認します。
+
 # 仮想環境内の仮想マシン(docker)、もしくは別の物理PCで立ち上がっているRailsアプリケーションを、
 # 仮想環境の外のブラウザで見るためには、ポートをフォーワーディング（転送）する必要があります。
 # [ポートフォワーディング:ポートからポートへデータを転送する。]
@@ -246,9 +251,3 @@ volumes:
 # 誰がどのPCのどのディレクトリで起動してもいいように、カレントディレクトリを指定する場合もある。
 # これはバインドマウント：ホストの既存のディレクトリやファイルを使用。
 # 頻繁に書き換えるファイルはバインドマウントの方がいい。
-
-# -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - 
-# 9
-# ポートの指定（外部からのアクセス時のポート:Dockerコンテナからアクセス時のポート）
-# ↓pumaでUNIXドメインソケット通信する為、ポート指定は不要に。
-# frontendのapiを呼び出す関数のfetch先のurlに合わせる為、ホストの80番ポートと接続
