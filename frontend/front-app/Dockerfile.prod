@@ -16,7 +16,7 @@ COPY . .
 # WORKDIR $FRONT_APP_PATHしているので、指定先は./=（/usr/src/front-app/以下）で大丈夫
 # COPY package.json package-lock.json ./
 # 4
-RUN npm ci --only=production
+RUN npm ci
 # .nextフォルダが作成
 RUN npm run build
 CMD ["npm", "run", "start"]

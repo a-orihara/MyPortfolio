@@ -60,16 +60,16 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 plugin :tmp_restart
 
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
-# 2 下記がNginxを使用した時に追加で記載した内容
-# app_rootの設定。pumaディレクトリを作成した為、../が一個多い。
-app_root = File.expand_path("../../..", __FILE__)
-# 本番環境では、NginxをリバースプロキシとしてPumaの前段におき、UNIXドメインソケットを経由してNginxとPumaが通信を行う。
-# bind "unix://#{Rails.root}/tmp/sockets/puma.sock"
-bind "unix://#{app_root}/tmp/sockets/puma.sock"
-# stdout_redirect: 標準出力/標準エラーを出力するファイル
-stdout_redirect "#{app_root}/log/puma.stdout.log", "#{app_root}/log/puma.stderr.log", true
-# PIDファイルの設置場所。Defaultの設定。
-pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
+# # 2 下記がNginxを使用した時に追加で記載した内容
+# # app_rootの設定。pumaディレクトリを作成した為、../が一個多い。
+# app_root = File.expand_path("../../..", __FILE__)
+# # 本番環境では、NginxをリバースプロキシとしてPumaの前段におき、UNIXドメインソケットを経由してNginxとPumaが通信を行う。
+# # bind "unix://#{Rails.root}/tmp/sockets/puma.sock"
+# bind "unix://#{app_root}/tmp/sockets/puma.sock"
+# # stdout_redirect: 標準出力/標準エラーを出力するファイル
+# stdout_redirect "#{app_root}/log/puma.stdout.log", "#{app_root}/log/puma.stderr.log", true
+# # PIDファイルの設置場所。Defaultの設定。
+# pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
 # =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =
 # 1

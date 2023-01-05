@@ -7,7 +7,7 @@ services:
     # イメージの指定
     image: mysql:8.0
     # コンテナ名の指定
-    container_name: mysql-ctr
+    container_name: mysql-ctr-dev
     # 2
     command: --default-authentication-plugin=mysql_native_password
     # 3 同期する
@@ -28,9 +28,9 @@ services:
       dockerfile: Dockerfile
     # imageとbuildが同時に宣言されている場合, ビルドが優先的に実行されて,
     # imageはその構成に使われる(imageによるプルは発生しない).結果image名を設定する事になる。
-    image: rails-img
+    image: rails-img-dev
     # コンテナ名の指定
-    container_name: rails-ctr
+    container_name: rails-ctr-dev
     env_file:
       - ./backend/api/.env
     # 5
@@ -49,7 +49,7 @@ services:
       - log-data:/api-app/log
     # 9
     ports:
-      - '80:3000'
+      - '3000:3000'
     # 依存関係の指定（railsはDBと接続する際は、DBのIPアドレスを指定する為）。
     depends_on:
       - db
@@ -81,15 +81,15 @@ services:
     build:
       context: ./frontend/front-app
       dockerfile: Dockerfile.dev
-    image: nextjs-img
-    container_name: nextjs-ctr
+    image: nextjs-img-dev
+    container_name: nextjs-ctr-dev
     # 同期する
     volumes:
       - ./frontend/front-app:/usr/src/front-app
     # 作業ディレクトリ/front-appをに指定しているので、'npm run dev'のみでOK
     command: 'npm run dev'
     ports:
-      - "4000:3000"
+      - "3001:3000"
     depends_on:
       - api
 

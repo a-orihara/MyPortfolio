@@ -32,14 +32,16 @@ services:
     container_name: rails-ctr-prod
     env_file:
       - ./backend/api/.env
+    environment:
+      RAILS_ENV: production
     # 5
     # rails s:puma(アプリケーションサーバ)が起動。「-C」でPumaの設定ファイルを指定することが可能。
     # ↓nginxなしの場合。
     # command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -e production -p 3000 -b '0.0.0.0'"
     # ↓productionモードではディレクトリ内にconfig/master.keyとconfig/credentials.ymlというファイルが必要。
-    command: bash -c "rm -f tmp/pids/server.pid && mkdir -p tmp/sockets && mkdir -p tmp/pids && bundle exec puma -C config/puma/production.rb"
+    # command: bash -c "rm -f tmp/pids/server.pid && mkdir -p tmp/sockets && mkdir -p tmp/pids && bundle exec puma -e production -C config/puma/production.rb"
     # command: bash -c "rm -f tmp/pids/server.pid && mkdir -p tmp/sockets && mkdir -p tmp/pids && bundle exec puma -C config/puma.rb"
-
+    command: bash -c "rm -f tmp/pids/server.pid && mkdir -p tmp/sockets && mkdir -p tmp/pids && bundle exec puma -e production -C config/puma.rb"
 
     # 8
     volumes:
@@ -47,32 +49,36 @@ services:
       - public-data:/api-app/public
       - tmp-data:/api-app/tmp
       - log-data:/api-app/log
+
+
     # 依存関係の指定（railsはDBと接続する際は、DBのIPアドレスを指定する為）。
     depends_on:
       - db
+    ports:
+      - '3002:3000'
     # -itのiの設定。stdin=標準入力をオープン。
     stdin_open: true
     # -itのt=tty
     tty: true
 
-  web:
-    build:
-      # ./backend/web/内のDockerfileを使う
-      context: ./backend/web/
-    image: nginx_img
-    container_name: nginx-ctr-prod
-    # UNIXドメインソケット通信によるコンテナ間通信となるため、web・nginxコンテナで名前付きvolumeをマウント
-    # してファイルを共有
-    volumes:
-      - public-data:/api-app/public
-      - tmp-data:/api-app/tmp
-    # ローカル80とコンテナ80を接続
-    ports:
-      - 80:80
-    # apiの次にweb(nginx)が立ち上がる
-    depends_on:
-      - api
-      - front
+  # web:
+  #   build:
+  #     # ./backend/web/内のDockerfileを使う
+  #     context: ./backend/web/
+  #   image: nginx_img
+  #   container_name: nginx-ctr-prod
+  #   # UNIXドメインソケット通信によるコンテナ間通信となるため、web・nginxコンテナで名前付きvolumeをマウント
+  #   # してファイルを共有
+  #   volumes:
+  #     - public-data:/api-app/public
+  #     - tmp-data:/api-app/tmp
+  #   # ローカル80とコンテナ80を接続
+  #   ports:
+  #     - 80:80
+  #   # apiの次にweb(nginx)が立ち上がる
+  #   depends_on:
+  #     - api
+  #     - front
 
   front: 
     build:
@@ -86,7 +92,7 @@ services:
     # 作業ディレクトリ/front-appをに指定しているので、'npm run dev'のみでOK
     # command: 'npm run dev'
     ports:
-      - "5000:3000"
+      - '3003:3000'
     depends_on:
       - api
 
