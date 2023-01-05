@@ -31,7 +31,7 @@ rails apiモードの場合は、ApplicationControllerは、ActionController::AP
 
 -        --        --        --        --        --        --        --        --        -
 3
-Railsでは、renderメソッドを使って簡単にJSON形式のデータを返却することができます。
+Railsでは、renderメソッドを使って簡単にJSON形式のデータをブラウザに返却することができます。
 
 renderメソッドは、呼び出すテンプレート（ビュー）ファイルを指定するメソッドですが、オプションにjsonをつける事で、
 指定したオブジェクトをJSON形式のデータでレスポンスを返すことができます。

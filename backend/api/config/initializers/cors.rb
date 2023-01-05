@@ -11,7 +11,9 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     # origins (文字列 or 正規表現): どのオリジンを許可するか（APIをうつ側のドメイン）
-    origins ['http://localhost:80']
+    # 本番:'http://localhost:80', 開発:'http://localhost:4000'
+    # origins ['http://localhost:80', 'http://localhost:3002']
+    origins "*"
 
     # resource (文字列 or 正規表現): 許可したいリソースファイル
     resource '*',

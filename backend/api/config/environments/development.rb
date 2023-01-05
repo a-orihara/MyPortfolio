@@ -9,6 +9,8 @@ Rails.application.configure do
   config.cache_classes = false
 
   # Do not eager load code on boot.
+  # [起動時にコードを読み込まないようにする。]
+  # config.eager_loadをtrueにすると、controllerやmodelなどのclass名がすべて事前に読み込まれます。
   config.eager_load = false
 
   # Show full error reports.

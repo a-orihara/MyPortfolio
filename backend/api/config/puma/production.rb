@@ -1,16 +1,5 @@
 # 1
 
-# Puma can serve each request in a thread from an internal thread pool.
-# The `threads` method setting takes two numbers: a minimum and maximum.
-# Any libraries that use thread pools should be configured to match
-# the maximum value specified for Puma. Default is set to 5 threads for minimum
-# and maximum; this matches the default thread size of Active Record.
-# [threads` メソッドの設定には、最小値と最大値の2つの数値が必要です。]
-# [Puma は内部スレッドプールから各リクエストをスレッドで処理することができます。]
-# [スレッドプールを使用するライブラリは、Puma に指定された最大値と一致するように設定する必要があります。
-# デフォルトでは、最小と最大で 5 スレッドに設定されています。これは Active Record のデフォルトのス
-# レッドサイズと同じです。]
-#
 # 3
 # 変数max_threads_countを定義。Defaultの設定。
 max_threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
@@ -25,20 +14,20 @@ threads min_threads_count, max_threads_count
 # [開発環境において、Puma がワーカーを終了させる前に待つ `worker_timeout` の閾値を指定します。]
 #
 # pumaのworkerのタイムアウト時間を定義。Defaultの設定。
-worker_timeout 3600 if ENV.fetch("RAILS_ENV", "development") == "development"
+worker_timeout 3600 if ENV.fetch("RAILS_ENV", "production") == "production"
 
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 # [Puma がリクエストを受け取るためにリッスンする `port` を指定します。デフォルトは 3000 です。]
 #
 # ↓pumaをどの環境で動作させるか指定。Defaultの設定。
-port ENV.fetch("PORT") { 3000 }
+# port ENV.fetch("PORT") { 3000 }
 
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 # Specifies the `environment` that Puma will run in.
 # [Puma が実行される `environment` を指定します。]
 #
-environment ENV.fetch("RAILS_ENV") { "development" }
+environment ENV.fetch("RAILS_ENV") { "productin" }
 
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 # Specifies the `pidfile` that Puma will use.
@@ -71,9 +60,9 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 plugin :tmp_restart
 
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
-# 2 下記がNginxを使用した時に追加で記載した内容
-# app_rootの設定
-# app_root = File.expand_path("../..", __FILE__)
+# # 2 下記がNginxを使用した時に追加で記載した内容
+# # app_rootの設定。pumaディレクトリを作成した為、../が一個多い。
+# app_root = File.expand_path("../../..", __FILE__)
 # # 本番環境では、NginxをリバースプロキシとしてPumaの前段におき、UNIXドメインソケットを経由してNginxとPumaが通信を行う。
 # # bind "unix://#{Rails.root}/tmp/sockets/puma.sock"
 # bind "unix://#{app_root}/tmp/sockets/puma.sock"

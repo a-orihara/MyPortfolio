@@ -1,8 +1,10 @@
 import axios from "axios";
 
-const DEFAULT_API_LOCALHOST = 'http://localhost/backend//api/v1'
+const DEFAULT_API_LOCALHOST_DEV = 'http://localhost:3000'
+const DEFAULT_API_LOCALHOST_PROD = 'http://localhost:3002'
 
-const userIndex = `${DEFAULT_API_LOCALHOST}/users`
+const userIndexDev = `${DEFAULT_API_LOCALHOST_DEV}/backend/api/v1/users`
+const userIndexProd = `${DEFAULT_API_LOCALHOST_PROD}/api/v1/users`
 
 export const axiosJson = () => {
   return axios.get('https://jsonplaceholder.typicode.com/users')
@@ -51,7 +53,7 @@ export const fetchJson = () => {
 }
 
 export const axiosRailsUsers = () => {
-  return axios.get(userIndex)
+  return axios.get(userIndexProd)
   .then(res => {
     const data = res.data
     return console.log(data.users[0].name);
@@ -61,14 +63,18 @@ export const axiosRailsUsers = () => {
 
 
 export const fetchRailsUsers = () => {
-  fetch(userIndex)
+  fetch(userIndexProd)
   .then((res) => {
     
     return res.json()
   })
   .then((users) => {
     console.log(users.users[0].name)
-  }) 
+  })
+  .catch((e) => {
+    console.error('Error:',e);
+    console.log(`"だめだ":${e}`);
+  })
 }
   
 
