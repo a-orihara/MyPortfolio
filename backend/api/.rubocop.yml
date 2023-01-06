@@ -10,6 +10,8 @@
 # 3
 # 追加した規約ファイル読込
 require:
+  # 入れた方がいい機能
+  - rubocop-performance
   # Railsに関わる構文規則チェック
   - rubocop-rails
   # Rspecに関わる構文規則チェック
@@ -79,8 +81,8 @@ Layout/LineLength:
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 # 2
 # inherit_from:継承。設定を読み込む際に利用するオプション。
-# .rubocop.ymlにinherit_from: .rubocop_todo.ymlが追加すると、
-# .rubocop_todo.ymlの内容が.rubocop.ymlに反映。
+# .rubocop.ymlにinherit_from: .rubocop_todo.ymlを追加すると、
+# .rubocop_todo.ymlの内容のルール違反を無視する
 
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 # 3
@@ -89,6 +91,9 @@ Layout/LineLength:
 # rubocop-performance：パフォーマンスに関わる構文規則チェック
 # バージョン0.71以前では、全部入りだったため、RuboCop関連の記事を読むときは、
 # バージョン0.71以前なのか、0.72以降のものなのかを注意
+# RuboCopのバージョンが0.72以降は「Rails Cops」が使えなくなりました。
+# RuboCopのバージョンが0.72以降の場合は、rubocop-railsをgemでインストールし、.rubocop.ymlに
+# require: rubocop-railsを追記してください。
 
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
