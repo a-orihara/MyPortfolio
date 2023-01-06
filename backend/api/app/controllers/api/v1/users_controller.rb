@@ -3,10 +3,10 @@ module Api
   module V1
     # 2
     class UsersController < ApplicationController
-      # def new
-      # end
-      # ↓rubocopにより
-      def new; end
+      def new
+      end
+      # # ↓rubocopにより
+      # def new; end
 
       # GET:/users
       def index
