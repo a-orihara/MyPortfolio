@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
+  # /static_pages/homeというURLへのリクエストを、StaticPagesコントローラのhome アクションと結びつけ。
+  # 3 
+  # root 'static_pages#home'
   get 'static_pages/home'
+
   # 1
   namespace 'api' do
     namespace 'v1' do
@@ -48,6 +52,22 @@ GET     /users/1/edit  edit      edit_user_path(user)  id=1のユーザーを編
 PATCH   /users/1       update    user_path(user)       ユーザーを更新するアクション
 DELETE  /users/1       destroy   user_path(user)       ユーザーを削除するアクション
 
+-        --        --        --        --        --        --        --        --        --        -
+# 3
+rootはルートドメイン（例 https://example.com）にアクセスしたときに表示するページの指定です。
+rootを指定しない場合は、railsのデフォルトページが表示されます。
+rootで指定できるのはGETメソッドのみです。
+
+rootの指定方法とgetの指定方法は違い、例えば[ root 'static_pages/home']ではエラーが発生する
+
+下記は[root 'home#index']と同じ意味
+root to: 'home#index'
+get '/', to: 'home#index'
+get 'home/index', action: :index, controller: 'home'
+match '/', to: 'home#index', via: 'get'
+#リダイレクトする場合
+get '/', to: redirect('/home/index', status: 302)
+get 'home/index'
 
 
 =end
