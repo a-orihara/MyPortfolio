@@ -5,10 +5,10 @@ import type { NextPage } from 'next';
 // stylesディレクトリ下のcssファイルはどのコンポーネントからでも使えるcss。他のファイルからもこの
 // Home.module.cssは使用可能。
 // cssモジュール(.module.css)を使うと、ビルド時にクラス名やIDへ接頭辞や接語尾がランダムに作成される。
-import styles from '../styles/Home.module.css';
+// import styles from '../styles/Home.module.css';
 import { Layout } from '../components/Layout';
 import SecondaryButton from '../components/atoms/button/SecondaryButton';
-import { fetchJson, axiosRailsUsers,  axiosJson, fetchRailsUsers } from '../api/users';
+import { fetchRailsUsers } from '../api/users';
 // import Hoge from '../components/Hoge';
 
 // -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
@@ -18,7 +18,6 @@ import { fetchJson, axiosRailsUsers,  axiosJson, fetchRailsUsers } from '../api/
 // console.log(axiosTest)
 // 5 NextPage型
 const Home: NextPage = () => {
-
   // console.log("axiosFetch")
   // fetchJson()
   // console.log("axiosJson")
@@ -26,36 +25,30 @@ const Home: NextPage = () => {
 
   // axiosRailsUsers()
 
-  console.log("ここだよー")
+  console.log('ここだよ');
 
-  fetchRailsUsers()
-
-
-  
-
-  
+  fetchRailsUsers();
 
   // console.log(`abc:${a}`);
 
   return (
     // [Home.module.css]のstyles.container
     <div>
-      <Layout title="HOME">
-        <div className="mx-auto px-6 py-16 pt-28 text-center">
-          <h1 className="mb-36 text-4xl font-spacemono scale-y-150 text-center tracking-tighter font-semibold text-black md:text-6xl">
-            Welcome to the Horror Domo App!  
+      <Layout title='HOME'>
+        <div className='mx-auto px-6 py-16 pt-28 text-center'>
+          <h1 className='mb-36 text-4xl font-spacemono scale-y-150 text-center tracking-tighter font-semibold text-black md:text-6xl'>
+            Welcome to the Horror Domo App!
           </h1>
-          
-          <div className="pt-10">
-            <SecondaryButton>Sign up!</SecondaryButton>  
+
+          <div className='pt-10'>
+            <SecondaryButton>Sign up!</SecondaryButton>
           </div>
         </div>
       </Layout>
-  
+
       {/* container:要素の幅を現在のブレークポイントに固定するためのコンポーネント */}
       {/* justify-around:コンテナの主軸に沿って、各項目の両側に等しい量のスペースがあるように項目を配置します。 */}
       {/* items-center:コンテナの横軸の中心に沿って項目を配置する */}
-      
 
       {/* <main className="min-h-screen py-16 px-0 flex flex-1 flex-col justify-center items-center">
         <h1 className="text-5xl font-spacemono">Hello</h1>
@@ -88,12 +81,7 @@ export default Home;
 
 // -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 
-
-
-
 // -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
-
-
 
 // -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 
