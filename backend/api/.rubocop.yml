@@ -96,6 +96,16 @@ Naming/VariableNumber:
 Naming/PredicateName:
   Enabled: false
 
+# [=begin =end]のブロックコメントの使用
+Style/BlockComments:
+  Enabled: false
+
+# ハッシュ{の前後にスペースが入ってない
+# good:e.g:
+# h = { a: 1, b: 2 }
+Layout/SpaceInsideHashLiteralBraces:
+  Enabled: false
+
 # 1行あたりの文字数をチェックする
 Layout/LineLength:
   Max: 130
