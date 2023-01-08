@@ -64,7 +64,7 @@ export const axiosRailsUsers = () => {
 };
 
 export const fetchRailsUsers = () => {
-  fetch(userIndexDev)
+  fetch(userIndexProd)
     .then((res) => {
       return res.json();
     })
