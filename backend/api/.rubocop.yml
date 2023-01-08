@@ -10,12 +10,15 @@
 # 3
 # 追加した規約ファイル読込
 require:
+  # 入れた方がいい機能
+  - rubocop-performance
   # Railsに関わる構文規則チェック
   - rubocop-rails
   # Rspecに関わる構文規則チェック
   - rubocop-rspec
 
 # AllCopsオプション:全てのCopsを対象にした設定。
+# 設定はこちらを参照:https://blog.to-ko-s.com/rubocop-setting/#i-6
 AllCops:
   # NewCops: enableを追加することで、RuboCopのバージョンがあがった際に追加されたCopを自動で有効にする。
   # NewCops: enableの設定は任意ですが、新たなCopに追従していくために特に理由がなければ有効にするとよい。
@@ -27,6 +30,8 @@ AllCops:
     - "config.ru"
     - "bin/**"
     - "lib/**"
+    - "log/**/*"
+    - "tmp/**/*"
     - "db/**/*"
     - "config/**/*"
     - "script/**/*"
@@ -34,10 +39,17 @@ AllCops:
     - "vendor/**/*" # rubocop config/default.yml
     - "node_modules/**/*"
     - "Gemfile"
+    - "config/environments/*"
+    - "config/puma.rb"
+    - "lib/tasks/auto_annotate_models.rake"
 
 # 恒久対応としてCopを無効にする設定は以下の通りです。
 # [Cop名]:
 #   Enabled: false
+
+# 設定が厳しいので一旦全てfalseにする
+Metrics:
+  Enabled: false
 
 # 日本語でのコメントを許可
 AsciiComments:
@@ -47,7 +59,7 @@ AsciiComments:
 Documentation:
   Enabled: false
 
-# モジュール名::クラス名の定義を許可
+# モジュール名::クラス名の定義を許可(コントローラ等のモジュールをネストしての宣言)
 ClassAndModuleChildren:
   Enabled: false
 
@@ -55,12 +67,43 @@ ClassAndModuleChildren:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+# ガード節の提案（難しいので一旦false）
+Style/GuardClause:
+  Enabled: false
+
 # !! のイディオムを許可
 Style/DoubleNegation:
   Enabled: false
 
-# 普通の文字列はシングルクォーテーションを使用しるという規約。
+# 普通の文字列はシングルクォーテーションを使用する（文字列のダブルクォートチェック）という規約。
 Style/StringLiterals:
+  Enabled: false
+
+# シンボルによる配列の%記法のチェック
+Style/SymbolArray:
+  Enabled: false
+  # EnforcedStyle: brackets
+
+# 文字列による配列の%記法のチェック
+Style/WordArray:
+  Enabled: false
+
+# 変数名に数字を許可
+Naming/VariableNumber:
+  Enabled: false
+
+# メソッド名等の命名の指摘
+Naming/PredicateName:
+  Enabled: false
+
+# [=begin =end]のブロックコメントの使用
+Style/BlockComments:
+  Enabled: false
+
+# ハッシュ{の前後にスペースが入ってない
+# good:e.g:
+# h = { a: 1, b: 2 }
+Layout/SpaceInsideHashLiteralBraces:
   Enabled: false
 
 # 1行あたりの文字数をチェックする
@@ -71,6 +114,14 @@ Layout/LineLength:
     - "Rakefile"
     - "spec/rails_helper.rb"
     - "spec/spec_helper.rb"
+
+# メソッドの改行ルール
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+# 空メソッドの場合に、1行のスタイルにしない:NG例：def style1; end
+Style/EmptyMethod:
+  EnforcedStyle: expanded
 # =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =
 # 1
 # [.rubocop.yml]:独自のコーディング規約を設定するファイル。
@@ -79,8 +130,8 @@ Layout/LineLength:
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 # 2
 # inherit_from:継承。設定を読み込む際に利用するオプション。
-# .rubocop.ymlにinherit_from: .rubocop_todo.ymlが追加すると、
-# .rubocop_todo.ymlの内容が.rubocop.ymlに反映。
+# .rubocop.ymlにinherit_from: .rubocop_todo.ymlを追加すると、
+# .rubocop_todo.ymlの内容のルール違反を無視する
 
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 # 3
@@ -89,6 +140,9 @@ Layout/LineLength:
 # rubocop-performance：パフォーマンスに関わる構文規則チェック
 # バージョン0.71以前では、全部入りだったため、RuboCop関連の記事を読むときは、
 # バージョン0.71以前なのか、0.72以降のものなのかを注意
+# RuboCopのバージョンが0.72以降は「Rails Cops」が使えなくなりました。
+# RuboCopのバージョンが0.72以降の場合は、rubocop-railsをgemでインストールし、.rubocop.ymlに
+# require: rubocop-railsを追記してください。
 
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
 # -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -

@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   # /static_pages/homeというURLへのリクエストを、StaticPagesコントローラのhome アクションと結びつけ。
   # 3 
   # root 'static_pages#home'
-  get 'static_pages/home'
+  # get 'static_pages/home'
+  get 'static_pages/home', to: 'static_pages#home'
 
   # 1
   namespace 'api' do

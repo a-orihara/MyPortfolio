@@ -1,37 +1,31 @@
-import React from 'react'
+import React from 'react';
 // next/routerは、routerオブジェクトにアクセスするためのパッケージです。
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 type Props = {
   children: React.ReactNode;
   onClick?: () => void;
-}
+};
 
+const PrimaryButton = (props: Props): JSX.Element => {
+  const router = useRouter();
 
-
-
-
-const PrimaryButton = (props:Props):JSX.Element => {
-  const router = useRouter()
-
-  const onClickHome = ():void => {
-    router.push("/")
-  }
+  const onClickHome = (): void => {
+    router.push('/');
+  };
 
   return (
     // childrenでボタンの名称を受け取って使い回しできるようにする
-    <button 
-      onClick={onClickHome} 
-      className="btn-primary bg-basic-yellow hover:bg-hover-yellow"
+    <button
+      onClick={onClickHome}
+      className='btn-primary bg-basic-yellow hover:bg-hover-yellow'
     >
       {props.children}
     </button>
-  )
-}
+  );
+};
 
-export default PrimaryButton
-
-
+export default PrimaryButton;
 
 // React Hooksは、
 

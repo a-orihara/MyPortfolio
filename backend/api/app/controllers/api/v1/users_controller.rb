@@ -11,9 +11,8 @@ module Api
         # @usersでなくてもいい
         users = User.all
         # 3
-        render json: {users: users}, status: :ok
+        render json: {users:}, status: :ok
       end
-
     end
   end
 end
@@ -31,6 +30,10 @@ rails apiモードの場合は、ApplicationControllerは、ActionController::AP
 
 -        --        --        --        --        --        --        --        --        -
 3
+ハッシュの省略記法。キー名と値が同じ場合、省略出来る。
+{users:} = {users: users}
+
+
 Railsでは、renderメソッドを使って簡単にJSON形式のデータをブラウザに返却することができます。
 
 renderメソッドは、呼び出すテンプレート（ビュー）ファイルを指定するメソッドですが、オプションにjsonをつける事で、

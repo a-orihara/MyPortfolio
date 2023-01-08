@@ -1,65 +1,58 @@
 // Headコンポーネントをimport
-import Head from "next/head"
+import Head from 'next/head';
 // import styles from '../styles/Home.module.css';
-import Image from 'next/image';
-import css from "styled-jsx/css";
-import PrimaryButton from "./atoms/button/PrimaryButton";
-import SecondaryButton from "./atoms/button/SecondaryButton";
 
-
+import PrimaryButton from './atoms/button/PrimaryButton';
 
 // 型エイリアス
 // コンポーネントに直接指定:Layout(props:{children:React.ReactNode ,title: string})
 type Props = {
-  children:React.ReactNode;
+  children: React.ReactNode;
   title: string;
-}
+};
 
 // 関数コンポーネントは型指定しないと、JSX.Element型になる
 // 現在FC、VFCは使われない傾向。下記のようにpropsに型指定する。
-export const Layout = (props:Props) => {
+export const Layout = (props: Props) => {
   return (
     // jsx(tsx)ではclassNameを使用
-    <div className="flex flex-col min-h-screen container mx-auto basic-yellow outline">
+    <div className='flex flex-col min-h-screen container mx-auto basic-yellow outline'>
       {/* 2 Headタグ(Next.jsで自動で<head>に変換)内にはmetaタグやlinkタグを設定する */}
       <Head>
         <title>{props.title}</title>
-        <meta charSet="utf-8" />
-        <meta name='description' content='ホラー映画好きが集まる投稿サイトです' />
+        <meta charSet='utf-8' />
+        <meta
+          name='description'
+          content='ホラー映画好きが集まる投稿サイトです'
+        />
         {/* 4 */}
         <link rel='icon' href='/favicon.png' />
       </Head>
-      
-      <header className="flex items-center bg-basic-yellow outline h-20">
-        <h1 className="mr-auto text-s md:text-2xl font-spacemono text-center tracking-tighter font-semibold">
+
+      <header className='flex items-center bg-basic-yellow outline h-20'>
+        <h1 className='mr-auto text-s md:text-2xl font-spacemono text-center tracking-tighter font-semibold'>
           Horror Domo App
         </h1>
         <PrimaryButton>HOME</PrimaryButton>
         <PrimaryButton>Log in</PrimaryButton>
       </header>
 
-      <div className="flex flex-col md:flex-row flex-1">
+      <div className='flex flex-col md:flex-row flex-1'>
         {/* <nav className="bg-orange-300 outline md:w-56"> */}
         {/* </nav> */}
-        <main className="bg-basic-orange outline flex-1">
-    
-          {props.children}
-          
-        </main>
+        <main className='bg-basic-orange outline flex-1'>{props.children}</main>
       </div>
 
-      <footer className="bg-basic-yellow outline md:h-14 h-11 flex justify-center items-center text-black text-sm">
+      <footer className='bg-basic-yellow outline md:h-14 h-11 flex justify-center items-center text-black text-sm'>
         @Ori 2022
         {/* <span > */}
-            {/* /public/vercel.svgの省略形 */}
-            {/* <Image src='/vercel.svg' alt='Vercel Logo' width={72} height={16} /> */}
+        {/* /public/vercel.svgの省略形 */}
+        {/* <Image src='/vercel.svg' alt='Vercel Logo' width={72} height={16} /> */}
         {/* </span> */}
       </footer>
     </div>
-
-    
-  )
-}
+  );
+};
 
 // =        ==        ==        ==        ==        ==        ==        ==        =
 // 1
@@ -117,7 +110,7 @@ export const Layout = (props:Props) => {
 // flex-growは、親要素のflexコンテナの余っているスペースを、子要素のflexアイテムに分配して、flexアイテムを伸ばすプロパティです。
 // flex-growの値は整数値のみで、flexアイテムが伸びる比率を指定します。
 
-// md:@media (min-width: 768px) 
+// md:@media (min-width: 768px)
 // スクリーンサイズが768px以上の場合に適用
 
 // mr-auto:margin-right: auto;
