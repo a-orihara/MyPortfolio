@@ -15,7 +15,7 @@ RSpec.describe User, type: :model do
   # モデルの有効性を検証するテスト
   it 'nameとemailがあれば有効である' do
     # Userクラスのインスタンスを作成し、それをマッチャに渡している
-    user = FactoryBot.build(:user)
+    user = build(:user)
     # 2
     expect(user).to be_valid
   end
@@ -24,7 +24,7 @@ RSpec.describe User, type: :model do
   it 'nameがなければ無効である' do
     # Userクラスのインスタンスを作成し、それをマッチャに渡している
     # nameをnilにしてインスタンス作成
-    user = FactoryBot.build(:user, name: nil)
+    user = build(:user, name: nil)
     # 「～ではないこと」を期待する場合は not_to
     expect(user).not_to be_valid
     # expect(user.name).to eq "test"
@@ -40,8 +40,17 @@ RSpec.describe User, type: :model do
   end
 
   # 長さを検証するテスト
-  it 'emailがなければ無効である' do
-    user = User.new(name: "test")
+  it 'nameが50文字以上であれば無効である' do
+    user = build(:user)
+    user.name = "a" * 51
+    # 「～ではないこと」を期待する場合は not_to
+    expect(user).not_to be_valid
+    # expect(user.name).to eq "test"
+  end
+
+  it 'emaiが244文字以上であれば無効である' do
+    user = build(:user)
+    user.email = "a" * 256
     # 「～ではないこと」を期待する場合は not_to
     expect(user).not_to be_valid
     # expect(user.name).to eq "test"

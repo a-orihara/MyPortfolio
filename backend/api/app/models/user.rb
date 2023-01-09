@@ -1,8 +1,8 @@
 # 1
 class User < ApplicationRecord
   # 2 ↓validates(:name, presence: true)と同じ意味
-  validates :name,  presence: true
-  validates :email, presence: true
+  validates :name,  presence: true, length: { maximum: 50 }
+  validates :email, presence: true, length: { maximum: 255 }
 end
 
 =begin
