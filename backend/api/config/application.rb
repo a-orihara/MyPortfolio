@@ -43,13 +43,12 @@ module ApiApp
     # rspecでgenerator使用時にスペックファイルを作成するかどうかの設定
     config.generators do |g|
       g.test_framework :rspec,
-        fixtures: true,
         # ヘルパーファイル用のスペックを作成しない
-        helper_specs: true,
+        helper_specs: false,
         # ルーティング(config/routes)用のスペックファイルを作成しない
         routing_specs: false,
         # ビュースペックを作成しない。フィーチャースペック、またはフロント側でUIをテストする為
-        view_specs: false
+        view_specs: false,
     end
   end
 end
