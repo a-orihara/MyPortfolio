@@ -5,11 +5,17 @@ require 'rails_helper'
 # describe （RSpec.describe）メソッドはテストのグループ化を宣言します。
 # type: :modelがUserのモデルをテスト
 RSpec.describe User, type: :model do
+
+  # ファクトリの有効性を検証
+  it '有効なファクトリを持つ事' do
+    # buildはインスタンス化されるだけで保存はされない。createでテストデータに保存
+    expect(FactoryBot.build(:user)).to be_valid
+  end
   # 1
   # モデルの有効性を検証するテスト
   it 'nameとemailがあれば有効である' do
     # Userクラスのインスタンスを作成し、それをマッチャに渡している
-    user = User.new(name: "test", email: "test.email")
+    user = FactoryBot.build(:user)
     # 2
     expect(user).to be_valid
   end
@@ -17,7 +23,8 @@ RSpec.describe User, type: :model do
   # モデルの存在性を検証するテスト
   it 'nameがなければ無効である' do
     # Userクラスのインスタンスを作成し、それをマッチャに渡している
-    user = User.new(email: "test.email")
+    # nameをnilにしてインスタンス作成
+    user = FactoryBot.build(:user, name: nil)
     # 「～ではないこと」を期待する場合は not_to
     expect(user).not_to be_valid
     # expect(user.name).to eq "test"
@@ -26,6 +33,10 @@ RSpec.describe User, type: :model do
   it 'emailがなければ無効である' do
     user = User.new(name: "test")
     expect(user).not_to be_valid
+  end
+
+  it 'emailが重複している場合は無効である' do
+    
   end
 
   # 長さを検証するテスト

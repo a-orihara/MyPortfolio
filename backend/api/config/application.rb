@@ -48,7 +48,7 @@ module ApiApp
         # ルーティング(config/routes)用のスペックファイルを作成しない
         routing_specs: false,
         # ビュースペックを作成しない。フィーチャースペック、またはフロント側でUIをテストする為
-        view_specs: false,
+        view_specs: false
     end
   end
 end
