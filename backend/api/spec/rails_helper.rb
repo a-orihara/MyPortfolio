@@ -62,4 +62,20 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # 1
+  config.include FactoryBot::Syntax::Methods
 end
+
+=begin
+=        ==        ==        ==        ==        ==        ==        ==        ==        =
+1
+#このコードを加えることで、以下のようにrspecのテストコード中でFactory_botのメソッドを使用する際に、クラス
+名の指定を省略できるようになる。
+#通常FactoryBotをつけないと、メソッドを呼べない
+user = FactoryBot.create(:user)
+
+#設定を追加することで、FactoryBotの記述が省略できる。
+user = create(:user)
+
+=end

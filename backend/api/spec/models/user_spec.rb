@@ -9,7 +9,7 @@ RSpec.describe User, type: :model do
   # ファクトリの有効性を検証
   it '有効なファクトリを持つ事' do
     # buildはインスタンス化されるだけで保存はされない。createでテストデータに保存
-    expect(FactoryBot.build(:user)).to be_valid
+    expect(build(:user)).to be_valid
   end
   # 1
   # モデルの有効性を検証するテスト
