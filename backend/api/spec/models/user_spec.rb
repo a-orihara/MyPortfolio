@@ -4,9 +4,14 @@ require 'rails_helper'
 
 # 3
 RSpec.describe User, type: :model do
-  before do
-    @user = build(:user)
-  end
+  # # before(:each)フックは各exampleの前に実行されます。
+  # before do
+  #   # beforeブロックとitブロックの中では変数のスコープが異なるため、インスタンス変数を使用。
+  #   # @user = build(:user)
+  #   # letで定義されたメソッドを使うと、初期化処理が実行されるのはそのメソッドが呼ばれたときだけ 
+  #   let(:user) { build(:user) }
+  # end
+  let(:user) { build(:user) }
   # ファクトリの有効性を検証
   it '有効なファクトリを持つ事' do
     # buildはメモリに保存されるが、テストDBに保存されない。createはテストDBに保存される
@@ -18,7 +23,7 @@ RSpec.describe User, type: :model do
   it 'nameとemailがあれば有効である' do
     # Userクラスのインスタンスを作成し、それをマッチャに渡している
     # 2
-    expect(@user).to be_valid
+    expect(user).to be_valid
   end
 
   # モデルの存在性を検証するテスト
@@ -45,33 +50,37 @@ RSpec.describe User, type: :model do
 
   # 長さを検証するテスト
   it 'nameが50文字以上であれば無効である' do
-    @user.name = "a" * 31
-    expect(@user).not_to be_valid
-    # expect(user.name).to eq "test"
+    user.name = "a" * 31
+    expect(user).not_to be_valid
   end
 
   it 'emaiが244文字以上であれば無効である' do
-    @user.email = "a" * 256
-    expect(@user).not_to be_valid
+    user.email = "a" * 256
+    expect(user).not_to be_valid
   end
 
   # メールフォーマットのテスト
-  # it '有効なメールフォーマットは有効である' do
-  #   user = build(:user)
-  #   valid_addresses = %w[user@example.com USER@foo.COM A_US-ER@foo.bar.org
-  #     first.last@foo.jp alice+bob@baz.cn]
-  #   user.name = "a" * 51
-  #   # 「～ではないこと」を期待する場合は not_to
-  #   expect(user).not_to be_valid
-  #   # expect(user.name).to eq "test"
-  # end
+  it '有効なメールフォーマットは有効である' do
+    # 4
+    valid_addresses = %w[user@example.com USER@foo.COM A_US-ER@foo.bar.org
+      first.last@foo.jp alice+bob@baz.cn]
+    valid_addresses.each do |valid_address|
+      user.email = valid_address
+      expect(user).to be_valid
+    end
+  end
+
+  it '無効なメールフォーマットは無効である' do
+    user.email = "user@example,com"
+    expect(user).not_to be_valid
+  end
 end
 
 =begin
 =        ==        ==        ==        ==        ==        ==        ==        ==        =
 1
-it はテストを  example（it do ... end）という単位にまとめる役割をします。
-it do ... end の中のエクスペクテーション（期待値と実際の値の比較）がすべてパスすれば、その example はパス
+itはテストをexample（it do ... end）という単位にまとめる役割をします。
+it do ... end の中のエクスペクテーション（期待値と実際の値の比較）がすべてパスすれば、そのexampleはパス
 したことになります。
 
 
@@ -100,5 +109,11 @@ RSpec.describe '四則演算'
 
 # type: :modelがUserのモデルをテスト
 # この中ではモデルで定義したメソッドを使える
+
+-        --        --        --        --        --        --        --        --        -
+4
+%w記法とは、文字列からなる配列を作成したいときに「[ ]」(ブラケット)や「" "」(ダブルクォーテーション)を省略
+して記述するためのRubyの構文です。
+
 
 =end
