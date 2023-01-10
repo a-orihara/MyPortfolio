@@ -5,12 +5,12 @@ require 'rails_helper'
 # describe （RSpec.describe）メソッドはテストのグループ化を宣言します。
 # type: :modelがUserのモデルをテスト
 RSpec.describe User, type: :model do
-
   # ファクトリの有効性を検証
   it '有効なファクトリを持つ事' do
     # buildはインスタンス化されるだけで保存はされない。createでテストデータに保存
     expect(build(:user)).to be_valid
   end
+
   # 1
   # モデルの有効性を検証するテスト
   it 'nameとemailがあれば有効である' do
@@ -31,13 +31,12 @@ RSpec.describe User, type: :model do
   end
 
   it 'emailがなければ無効である' do
-    user = User.new(name: "test")
+    user = build(:user, email: nil)
     expect(user).not_to be_valid
   end
 
-  it 'emailが重複している場合は無効である' do
-    
-  end
+  # it 'emailが重複している場合は無効である' do
+  # end
 
   # 長さを検証するテスト
   it 'nameが50文字以上であれば無効である' do
@@ -73,7 +72,7 @@ expect には「期待する」という意味があるので、 例えばexpect
 原則として「1つの example につき1つのエクスペクテーション」で書いた方がテストの保守性が良くなります。
 
 be_xxx (predicateマッチャ)
-RSpecで特徴的なのが、 valid? のようにメソッド名が「?」で終わり、戻り値が true / false になるメソッドを 
+RSpecで特徴的なのが、 valid? のようにメソッド名が「?」で終わり、戻り値が true / false になるメソッドを
 be_valid のような形式で検証できることです。
 e.g
 # user.valid? が true になればパスする

@@ -1,5 +1,3 @@
-
-
 # Rspecの全体的な設定を記述するファイル
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
