@@ -3,15 +3,13 @@
 require 'rails_helper'
 
 # 3
+# 有効なモデルのオブジェクトかどうかのテスト。有効なオブジェクトしかDBに保存出来ないる。
+# ちなみにモデルのオブジェクトは、バリデーションメソッドを通し、オブジェクトが有効な場合にのみデータベースに
+# 保存出来る。
 RSpec.describe User, type: :model do
-  # # before(:each)フックは各exampleの前に実行されます。
-  # before do
-  #   # beforeブロックとitブロックの中では変数のスコープが異なるため、インスタンス変数を使用。
-  #   # @user = build(:user)
-  #   # letで定義されたメソッドを使うと、初期化処理が実行されるのはそのメソッドが呼ばれたときだけ 
-  #   let(:user) { build(:user) }
-  # end
+  # 5
   let(:user) { build(:user) }
+
   # ファクトリの有効性を検証
   it '有効なファクトリを持つ事' do
     # buildはメモリに保存されるが、テストDBに保存されない。createはテストDBに保存される
@@ -49,21 +47,20 @@ RSpec.describe User, type: :model do
   end
 
   # 長さを検証するテスト
-  it 'nameが50文字以上であれば無効である' do
+  it 'nameが30文字以上であれば無効である' do
     user.name = "a" * 31
     expect(user).not_to be_valid
   end
 
-  it 'emaiが244文字以上であれば無効である' do
-    user.email = "a" * 256
+  it 'emaiが256文字以上であれば無効である' do
+    user.email = "#{'a' * 244}@example.com"
     expect(user).not_to be_valid
   end
 
   # メールフォーマットのテスト
   it '有効なメールフォーマットは有効である' do
     # 4
-    valid_addresses = %w[user@example.com USER@foo.COM A_US-ER@foo.bar.org
-      first.last@foo.jp alice+bob@baz.cn]
+    valid_addresses = %w[user@example.com USER@foo.COM A_US-ER@foo.bar.org first.last@foo.jp alice+bob@baz.cn]
     valid_addresses.each do |valid_address|
       user.email = valid_address
       expect(user).to be_valid
@@ -71,8 +68,22 @@ RSpec.describe User, type: :model do
   end
 
   it '無効なメールフォーマットは無効である' do
-    user.email = "user@example,com"
-    expect(user).not_to be_valid
+    invalid_addresses = %w[user@example,com user_at_foo.org user.name@example. foo@bar_baz.com foo@bar+baz.com]
+    invalid_addresses.each do |invalid_address|
+      user.email = invalid_address
+      expect(user).not_to be_valid
+    end
+  end
+
+  # 大文字小文字を無視したメールアドレスの一意性の検証
+  it '重複したメールアドレスは無効である' do
+    # dupメソッド:オブジェクトのコピーを作成するメソッド
+    duplicate_user = user.dup
+    # duplicate_user.emailのみ大文字にする
+    duplicate_user.email = user.email.upcase
+    user.save
+    # 6
+    expect(duplicate_user).not_to be_valid
   end
 end
 
@@ -115,5 +126,42 @@ RSpec.describe '四則演算'
 %w記法とは、文字列からなる配列を作成したいときに「[ ]」(ブラケット)や「" "」(ダブルクォーテーション)を省略
 して記述するためのRubyの構文です。
 
+-        --        --        --        --        --        --        --        --        -
+5
+let の基本的な使い方
+let(:foo) { ... } のように書くと、 { ... } の中の値が foo として参照できる
 
+現行のrailsでは、newメソッドとbuildメソッドはほとんど同じ働きをする。
+
+let変数の代わりに、beforeとインスタン変数を使っても同じ事が可能。
+letで定義されたメソッドを使うと、初期化処理が実行されるのはそのメソッドが呼ばれたときだけ。
+
+before(:each)フックは各exampleの前に実行されます。
+before do
+  beforeブロックとitブロックの中では変数のスコープが異なるため、インスタンス変数を使用。
+  @user = build(:user)
+end
+
+User.new:メモリ上にオブジェクトを作成
+valid?メソッド:オブジェクトが有効かどうか確認（DBに保存されたかは関係ない）
+user.save:オブジェクトを保存
+
+-        --        --        --        --        --        --        --        --        -
+6
+@userの保存後は、duplicate_userのメールアドレスが既にDB内に存在するため、ユーザの作成は無効になる。
+
+let(:user)が呼ばれたタイミングでは、インスタンスが生成されるだけで、まだデータベースに保存はされていない状態
+です。この状態でuserを複製しておき、user.saveを実行すると、元のuserはデータベースに保存され、複製したユーザ
+は保存されていないインスタンス、という状態ができます。
+そして、複製したユーザをレシーバとしてbe_validすると、すでにデータベースに保存済みの元のuserとemailが重複し
+ているため、バリデーションに引っかかる(valid?がfalseになる)、ということを検証しています。
+
+大文字と小文字を区別しない設定
+# duplicate_user.emailのみ大文字にする
+duplicate_user.email = user.email.upcase
+本来なら、大文字と小文字を区別する設定であれば、duplicate_user.email（大文字）とuser.email（小文字）は、
+別のメアドと認識され、登録が有効になる。区別しない設定なので、大文字でも同じメアドと認識され、無効になる。
+*uniqueness: { case_sensitive: false }
+*通常、メールアドレスでは大文字小文字が区別されません。すなわち、foo@bar.com は FOO@BAR.COMと書いても扱い
+は同じです。したがって、メールアドレスの検証ではこのような場合も考慮する必要があります。
 =end

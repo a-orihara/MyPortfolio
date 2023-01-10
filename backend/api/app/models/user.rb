@@ -4,10 +4,11 @@ class User < ApplicationRecord
   validates :name,  presence: true, length: { maximum: 30 }
   # 3
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email, 
-            presence: true, 
-            length: { maximum: 255 }, 
-            uniqueness: true, 
+  validates :email,
+            presence: true,
+            length: { maximum: 255 },
+            # :case_sensitive:大文字小文字の違いを区別する。
+            uniqueness: { case_sensitive: false },
             format: { with: VALID_EMAIL_REGEX }
 end
 
