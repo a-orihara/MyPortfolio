@@ -7,7 +7,7 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   # ファクトリの有効性を検証
   it '有効なファクトリを持つ事' do
-    # buildはインスタンス化されるだけで保存はされない。createでテストデータに保存
+    # buildはメモリに保存されるが、テストDBに保存されない。createはテストDBに保存される
     expect(build(:user)).to be_valid
   end
 
@@ -35,8 +35,12 @@ RSpec.describe User, type: :model do
     expect(user).not_to be_valid
   end
 
-  # it 'emailが重複している場合は無効である' do
-  # end
+  # 重複を検証するテスト
+  it 'emailが重複している場合は無効である' do
+    create(:user)
+    user = build(:user)
+    expect(user).not_to be_valid
+  end
 
   # 長さを検証するテスト
   it 'nameが50文字以上であれば無効である' do
@@ -54,6 +58,17 @@ RSpec.describe User, type: :model do
     expect(user).not_to be_valid
     # expect(user.name).to eq "test"
   end
+
+  # メールフォーマットのテスト
+  # it '有効なメールフォーマットは有効である' do
+  #   user = build(:user)
+  #   valid_addresses = %w[user@example.com USER@foo.COM A_US-ER@foo.bar.org
+  #     first.last@foo.jp alice+bob@baz.cn]
+  #   user.name = "a" * 51
+  #   # 「～ではないこと」を期待する場合は not_to
+  #   expect(user).not_to be_valid
+  #   # expect(user.name).to eq "test"
+  # end
 end
 
 =begin
