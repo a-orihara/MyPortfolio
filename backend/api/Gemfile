@@ -43,6 +43,10 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # [コード中の任意の場所で 'byebug' を呼び出すと、実行が停止し、デバッガコンソールが表示されます。]
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  # 本番環境では読み込まない（テストしない）
+  gem 'rspec-rails'
+  # rspecで使用するテストデータ作成用のgem
+  gem 'factory_bot_rails'
 end
 
 group :development do
