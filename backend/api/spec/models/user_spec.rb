@@ -2,9 +2,11 @@
 # ファイル内のテストを実行する為に、Railsアプリの読み込みが必要である事を伝えている。
 require 'rails_helper'
 
-# describe （RSpec.describe）メソッドはテストのグループ化を宣言します。
-# type: :modelがUserのモデルをテスト
+# 3
 RSpec.describe User, type: :model do
+  before do
+    @user = build(:user)
+  end
   # ファクトリの有効性を検証
   it '有効なファクトリを持つ事' do
     # buildはメモリに保存されるが、テストDBに保存されない。createはテストDBに保存される
@@ -15,9 +17,8 @@ RSpec.describe User, type: :model do
   # モデルの有効性を検証するテスト
   it 'nameとemailがあれば有効である' do
     # Userクラスのインスタンスを作成し、それをマッチャに渡している
-    user = build(:user)
     # 2
-    expect(user).to be_valid
+    expect(@user).to be_valid
   end
 
   # モデルの存在性を検証するテスト
@@ -37,26 +38,21 @@ RSpec.describe User, type: :model do
 
   # 重複を検証するテスト
   it 'emailが重複している場合は無効である' do
-    create(:user)
-    user = build(:user)
+    create(:user, email: "testuser_1@example.com")
+    user = build(:user, email: "testuser_1@example.com")
     expect(user).not_to be_valid
   end
 
   # 長さを検証するテスト
   it 'nameが50文字以上であれば無効である' do
-    user = build(:user)
-    user.name = "a" * 51
-    # 「～ではないこと」を期待する場合は not_to
-    expect(user).not_to be_valid
+    @user.name = "a" * 31
+    expect(@user).not_to be_valid
     # expect(user.name).to eq "test"
   end
 
   it 'emaiが244文字以上であれば無効である' do
-    user = build(:user)
-    user.email = "a" * 256
-    # 「～ではないこと」を期待する場合は not_to
-    expect(user).not_to be_valid
-    # expect(user.name).to eq "test"
+    @user.email = "a" * 256
+    expect(@user).not_to be_valid
   end
 
   # メールフォーマットのテスト
@@ -94,4 +90,15 @@ e.g
 expect(user).to be_valid
 
 be_valid:あることを期待してその通りの結果になるのかをテストする
+
+-        --        --        --        --        --        --        --        --        -
+3
+# describe （RSpec.describe）メソッドはテストのグループ化を宣言します。
+e.g.
+RSpec.describe '四則演算'
+ここでは「四則演算に関するテストを書くよー」と宣言しています。
+
+# type: :modelがUserのモデルをテスト
+# この中ではモデルで定義したメソッドを使える
+
 =end
