@@ -14,6 +14,7 @@ class User < ApplicationRecord
             format: { with: VALID_EMAIL_REGEX }
   # 7
   has_secure_password
+  validates :password, presence: true, length: { minimum: 6 }
 end
 
 =begin
@@ -89,7 +90,7 @@ uniqueness: { case_sensitive: false },
 has_secure_password
 .セキュアにハッシュ化したパスワードを、データベース内の password_digest という属性に保存できるようになる。
 .2つのペアの仮想的な属性(password と password_confirmation)が使える ようになる。また、存在性と値が一致
-するかどうかのバリデーションも追加される。
+するかどうかのバリデーションもバリデーションをする機能も (強制的に)追加されている。
 .authenticate メソッドが使えるようになる(引数の文字列がパスワードと一致すると User オブジェクトを、間違っ
 ていると false を返すメソッド)。
 
@@ -97,7 +98,11 @@ has_secure_password
 ハッシュ化したものをデータベースに保存します。生のパスワードではなく、ハッシュ化されたパスワード同士を比較します。
 
 has_secure_password機能を使えるようにするには、モデル内に password_digestという属性が含まれている必要が
-ある。またhas_secure_passwordを使ってパスワードをハッシュ化する為に、ハッシュ関数であるbcryptを使う為のgem
-が必要。
+ある。暗号化されたパスワードはpassword_digestというカラムに保存される為。またhas_secure_passwordを使って
+パスワードをハッシュ化する為に、ハッシュ関数であるbcryptを使う為のgemが必要。
 
+ちなみにhas_secure_passwordメソッドは存在性のバリデーションをデフォでしてくれるのですが、 これは新しくレコ
+ードが追加されたときだけに適用される性質を持っています。したがって、例えばユーザーが’ ’(6文字分の空白スペース)
+といった文字列をパスワード欄に入力して[更新]しようとすると、バリデーションが適用されずに更新されてしまう問題が
+発生してしまうのです。これに対処する為、
 =end
