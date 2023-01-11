@@ -85,6 +85,15 @@ RSpec.describe User, type: :model do
     # 6
     expect(duplicate_user).not_to be_valid
   end
+
+  it 'emailは小文字でDB登録される' do
+    mixed_case_email = 'Foo@ExAMPle.CoM'
+    user.email = mixed_case_email
+    user.save
+    # reload:変更されたDBの内容をインスタンスに反映させる
+    expect(user.reload.email).to eq mixed_case_email.downcase
+  end
+
 end
 
 =begin
@@ -164,4 +173,8 @@ duplicate_user.email = user.email.upcase
 *uniqueness: { case_sensitive: false }
 *通常、メールアドレスでは大文字小文字が区別されません。すなわち、foo@bar.com は FOO@BAR.COMと書いても扱い
 は同じです。したがって、メールアドレスの検証ではこのような場合も考慮する必要があります。
+
+before_save { self.email = email.downcase }
+save前に小文字にする。
+大文字のメアドも保存前にこのbefore_saveにかかるから、小文字判定されて、重複と見做され無効になる。
 =end
