@@ -64,12 +64,14 @@ export const axiosRailsUsers = () => {
 };
 
 export const fetchRailsUsers = () => {
-  fetch(userIndexProd)
+  fetch(userIndexDev)
     .then((res) => {
       return res.json();
     })
     .then((users) => {
       console.log(users.users[0].name);
+      console.log(users.users[0].email);
+      console.log(users.users[0].password_digest);
     })
     .catch((e) => {
       console.error('Error:', e);
