@@ -9,8 +9,8 @@ class User < ApplicationRecord
   validates :email,
             presence: true,
             length: { maximum: 255 },
-            # :case_sensitive:大文字小文字の違いを区別する。
-            uniqueness: { case_sensitive: false },
+            # 6
+            uniqueness: true,
             format: { with: VALID_EMAIL_REGEX }
 end
 
@@ -71,4 +71,10 @@ before_save:Active Recordのコールバック(callback)メソッド。オブジ
 釈してしまうデータベースがありますが、私達のアプリケーションではこれらの文字列 は同一であると解釈されるべきで
 す。この問題を避けるために、今回は「データベース に保存される直前にすべての文字列を小文字に変換する」という対
 策を採ります。これを実装するために Active Record のコールバック(callback) メソッドを利用します。
+
+-        --        --        --        --        --        --        --        --        -
+6
+# 以前の内容。メー ルアドレスが小文字で統一されれば、大文字小文字を区別するマッチが問題なく動作できるから不要に。
+# :case_sensitive:大文字小文字の違いを区別する。
+uniqueness: { case_sensitive: false },
 =end
