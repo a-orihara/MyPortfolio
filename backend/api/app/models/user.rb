@@ -1,5 +1,7 @@
 # 1
 class User < ApplicationRecord
+  # 5
+  before_save { self.email = email.downcase }
   # 2 ↓validates(:name, presence: true)と同じ意味
   validates :name,  presence: true, length: { maximum: 30 }
   # 3
@@ -59,4 +61,14 @@ upsert_all
 formatオプション
 このヘルパーメソッドは、引数にwithオプションで与えられた正規表現(Regular Expression)(regexとも呼ばれます)
 を取り、と属性の値がマッチするかどうかを検証します。
+
+-        --        --        --        --        --        --        --        --        -
+5
+before_save:Active Recordのコールバック(callback)メソッド。オブジェクトがDBに保存される前に処理を実行。
+
+メールアドレスの一意性を保証するためには、データベースのアダプタが、常に大文字小文字を区別するインデックスを使
+っているとは限らない問題への対処が必要。例えば、Foo@ExAMPle.Com と foo@example.com が別々の文字列だと解
+釈してしまうデータベースがありますが、私達のアプリケーションではこれらの文字列 は同一であると解釈されるべきで
+す。この問題を避けるために、今回は「データベース に保存される直前にすべての文字列を小文字に変換する」という対
+策を採ります。これを実装するために Active Record のコールバック(callback) メソッドを利用します。
 =end
