@@ -12,6 +12,8 @@ class User < ApplicationRecord
             # 6
             uniqueness: true,
             format: { with: VALID_EMAIL_REGEX }
+  # 7
+  has_secure_password
 end
 
 =begin
@@ -81,4 +83,21 @@ User モデルの中では右式の self を省略できるので、今回は次
 # 以前の内容。メールアドレスが小文字で統一されれば、大文字小文字を区別するマッチが問題なく動作できるから不要に。
 # :case_sensitive:大文字小文字の違いを区別する。
 uniqueness: { case_sensitive: false },
+
+-        --        --        --        --        --        --        --        --        -
+7
+has_secure_password
+.セキュアにハッシュ化したパスワードを、データベース内の password_digest という属性に保存できるようになる。
+.2つのペアの仮想的な属性(password と password_confirmation)が使える ようになる。また、存在性と値が一致
+するかどうかのバリデーションも追加される。
+.authenticate メソッドが使えるようになる(引数の文字列がパスワードと一致すると User オブジェクトを、間違っ
+ていると false を返すメソッド)。
+
+セキュアパスワードという 手法では、各ユーザーにパスワードとパスワードの確認を入力させ、それを(そのままではなく)
+ハッシュ化したものをデータベースに保存します。生のパスワードではなく、ハッシュ化されたパスワード同士を比較します。
+
+has_secure_password機能を使えるようにするには、モデル内に password_digestという属性が含まれている必要が
+ある。またhas_secure_passwordを使ってパスワードをハッシュ化する為に、ハッシュ関数であるbcryptを使う為のgem
+が必要。
+
 =end

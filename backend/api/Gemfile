@@ -35,6 +35,8 @@ gem 'rack-cors'
 gem 'net-smtp'
 gem 'net-imap'
 gem 'net-pop'
+# has_secure_passwordを使ってパスワードをハッシュ化する為に、ハッシュ関数であるbcryptを使う為のgemが必要。
+gem 'bcrypt'
 
 # 2
 gem 'dotenv-rails'
