@@ -4,23 +4,22 @@
 module.exports = {
   // 1 プロジェクトのコンテンツソースを設定する。
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx}",
-    "./src/components/**/*.{js,ts,jsx,tsx}",
+    './src/pages/**/*.{js,ts,jsx,tsx}',
+    './src/components/**/*.{js,ts,jsx,tsx}',
   ],
   // 2 テーマの設定:プロジェクトのデフォルトテーマをカスタマイズ
   theme: {
     //  3 extend:デフォルトのテーマを拡張する
     extend: {
-      colors:{
-        'basic-yellow'    : '#F2CB05',
-        'basic-orange'    : '#F28705',
-        'basic-pink'      : '#F07171',
-        'hover-yellow'    : '#FFF33F',
-        'hover-pink'      : '#F24B4B',
-        'hover-orange'    : '#fef08a',
+      colors: {
+        'basic-yellow': '#F2CB05',
+        'basic-orange': '#F28705',
+        'basic-pink': '#F07171',
+        'hover-yellow': '#FFF33F',
+        'hover-pink': '#F24B4B',
+        'hover-orange': '#fef08a',
         'font-color-green': '#0f7d3b',
-        
-      }
+      },
     },
     // fontFamilyユーティリティを使って、テキストの書体を制御することができます。
     fontFamily: {
@@ -29,7 +28,7 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};
 
 // =        ==        ==        ==        ==        ==        ==        ==        =
 // 1
@@ -42,7 +41,7 @@ module.exports = {
 // Tailwindが必要なCSSを生成するためには、Tailwindのクラス名を含むプロジェクト内の全てのファイルについて
 // 知る必要があります。
 // 設定ファイルのコンテンツセクションで、すべてのコンテンツファイルへのパスを設定します。
-// パスは tailwind.config.js ファイルではなく、プロジェクトのルートからの相対パスです。したがって、 
+// パスは tailwind.config.js ファイルではなく、プロジェクトのルートからの相対パスです。したがって、
 // tailwind.config.js ファイルが独自の場所にある場合でも、パスはプロジェクトのルートからの相対パスで記述
 // する必要があります。
 
