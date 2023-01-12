@@ -1,83 +1,26 @@
-# =        ==        ==        ==        ==        ==        ==        ==        ==        =
-# 基本的な流れ
-# package.jsonとpackage-lock.jsonをコピー
-# npm ci node_moudlesが作成される
-# コードとまるっとコピー
-# npm build
-# npm start
 
-# 通常、Next.js の Docker Image を作成する場合は下記ファイルが必要となります
-# ビルド成果物
-# /.next/
-# スタティックファイル
-# /public/
-# 依存パッケージ
-# /node_modules/
-# 設定ファイル
-# /next.config.js
-
-# =        ==        ==        ==        ==        ==        ==        ==        ==        =
-# マルチステージビルドの利用。イメージサイズを小さく抑える為に行う。
-# ref:https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
-# 1
 
 # 依存パッケージ(各種ライブラリ)のインストール
 # 2 alpine:Linuxのディストリビューション。軽量なAlpine上でNodeJSのv16系を動かす。Alpine Linux はほとん
 FROM node:16-alpine AS deps
 # node.jsの本番環境
-# ENV NODE_ENV production
+ENV NODE_ENV production
 # 3
 RUN apk add --no-cache libc6-compat
-# 匿名での情報収集を拒否する設定
-ENV NEXT_TELEMETRY_DISABLED 1
-# front-appを作成し、作業ディレクトリに指定。
-WORKDIR /app
-# packeg.jsonとpackage-lock.jsonのみコピーする
-# WORKDIR $FRONT_APP_PATHしているので、指定先は./=（/usr/src/front-app/以下）で大丈夫
-COPY package.json package-lock.json ./
-# 4
-RUN npm ci --only=production
-
-# -       --       --       --       --       --       --       --       -
-# 必要なときだけソースコードをリビルドする
-FROM node:16-alpine AS builder
-# ENV NODE_ENV production
-WORKDIR /app
-# 逆?
-COPY . .
-# --from=deps:depsステージを参照(本番環境のみのライブラリが入った、node_modules書き換え？)
-COPY --from=deps /app/node_modules ./node_modules
-# .nextフォルダが作成
-RUN npm run build
-
-# -       --       --       --       --       --       --       --       -
-# プロダクション・イメージを作成し、すべてのファイルをコピーして、次に実行します。
-FROM node:16-alpine
-ENV NODE_ENV production
 ENV FRONT_APP_PATH /usr/src/front-app
 WORKDIR $FRONT_APP_PATH
 ENV NEXT_TELEMETRY_DISABLED 1
+COPY . .
+# front-appを作成し、作業ディレクトリに指定。
+# packeg.jsonとpackage-lock.jsonのみコピーする
+# WORKDIR $FRONT_APP_PATHしているので、指定先は./=（/usr/src/front-app/以下）で大丈夫
+# COPY package.json package-lock.json ./
+# 4
+RUN npm ci
+# .nextフォルダが作成
+RUN npm run build
+CMD ["npm", "run", "start"]
 
-# COPYコマンドは適切なアクセス権を持つユーザーで実行の必要？
-# RUN addgroup --system --gid 1001 nodejs
-# RUN adduser --system --uid 1001 nextjs
-
-# 初期設定のままであれば不要
-COPY --from=builder /app/next.config.js ./next.config.js
-# buildによって.next配下に生成されたhtml、JSON、JSファイルをコピーする
-COPY --from=builder /app/.next ./.next
-# ファビコンが格納されたディレクトリをコピーする
-COPY --from=builder /app/public ./public
-# COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY --from=builder /app/package.json ./package.json
-# 必要なら
-# COPY --from=builder /app/.env .env
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-# COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-# 5
-# CMD ["npm", "run", "start"]
-CMD [ "node_modules/.bin/next", "start" ]
 # =        ==        ==        ==        ==        ==        ==        ==        ==        =
 # 1
 # アプリケーションの依存パッケージのインストール、build環境と,実行環境を分離して、実行環境には最終的な成果物だけを配置することによりimageサイズ
